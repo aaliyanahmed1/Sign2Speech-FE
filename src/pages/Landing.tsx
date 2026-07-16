@@ -27,10 +27,10 @@ export default function Landing() {
       {/* Dark frosted overlay to make text pop while keeping the background image beautifully visible */}
       <div className="absolute inset-0 bg-[#050505]/90 backdrop-blur-[5px] pointer-events-none z-0" />
       
-      <main className="pt-16 pb-20 min-h-screen relative z-10">
+      <main className="pt-2 pb-20 min-h-screen relative z-10">
         {/* Hero Section */}
         {/* Hero Section */}
-        <section className="relative px-margin-mobile pt-8 md:pt-12 max-w-7xl mx-auto overflow-hidden z-10">
+        <section className="relative px-margin-mobile pt-2 md:pt-4 max-w-7xl mx-auto overflow-hidden z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-center text-center lg:text-left">
             
             {/* Left Column: Text Content & Actions */}
