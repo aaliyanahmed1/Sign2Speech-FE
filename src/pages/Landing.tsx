@@ -63,7 +63,7 @@ export default function Landing() {
                 transition={{ delay: 0.2 }}
                 className="font-body-lg text-on-surface-variant max-w-xl mx-auto lg:mx-0 opacity-80 leading-relaxed text-xs md:text-sm"
               >
-                A free, open-source contribution to human accessibility. Sign2Speech translates Pakistan Sign Language (PSL) gestures into fluid spoken Urdu and English—100% locally and privately in your browser with zero cloud latency.
+                A free accessibility tool translating Pakistan Sign Language (PSL) to spoken Urdu and English, 100% locally and privately.
               </motion.p>
 
               {/* Quick Metrics Counters Grid (Compact 2x2 inside left column) */}
@@ -187,7 +187,7 @@ export default function Landing() {
                       <span className="material-symbols-outlined text-3xl font-extrabold ml-1">play_arrow</span>
                     </div>
                     <div className="apple-glass px-5 py-2 rounded-full border border-white/10 text-on-surface font-syne font-bold text-[10px] uppercase tracking-widest group-hover/preview:border-primary/30 transition-all">
-                      Launch PSL Interpreter
+                      Launch Free Interpreter
                     </div>
                   </div>
 
@@ -280,7 +280,7 @@ export default function Landing() {
         <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20">
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-center md:text-left mx-auto md:mx-0">
             <div className="max-w-xl">
-              <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">The Accessibility Gap</span>
+              
               <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Why Assistive AI Translation Matters</h2>
             </div>
             <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed max-w-md">
@@ -328,7 +328,7 @@ export default function Landing() {
         {/* Supported Gesture Vocabulary Showcase */}
         <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
           <div className="max-w-xl mb-12 text-center md:text-left mx-auto md:mx-0">
-            <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Lexicon Database</span>
+            
             <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Supported Sign Vocabulary</h2>
             <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed mt-2">
               Sign2Speech supports 23 active gesture vocabulary classifications locally on-device.
@@ -411,7 +411,7 @@ export default function Landing() {
         <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-center md:text-left mx-auto md:mx-0">
             <div className="max-w-xl">
-              <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Simulated Sandbox</span>
+              
               <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Inference Simulator</h2>
               <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed mt-2">
                 Click any vocabulary gesture below to simulate hand keypoint tracking and grammar translation in real-time.
