@@ -48,8 +48,8 @@ export default function Landing() {
             transition={{ delay: 0.1 }}
             className="font-display-lg text-4xl md:text-6xl lg:text-7xl mb-4 max-w-4xl mx-auto text-on-surface tracking-tight font-extrabold leading-tight"
           >
-            Instant Sign Language <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Speech Synthesis</span>
+            Speak Your Signs.<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Hear Your Voice Instantly.</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -59,7 +59,7 @@ export default function Landing() {
             transition={{ delay: 0.2 }}
             className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-6 opacity-75 leading-relaxed text-sm md:text-base"
           >
-            A privacy-first local engine converting webcam sign gestures into grammatically polished speech instantly.
+            Bridging the gap between sign language and spoken conversation. Translate webcam gestures into polished, natural speech in under 18ms—100% locally and privately in your browser with zero setup.
           </motion.p>
 
           {/* Quick Specs / Telemetry Badges */}
