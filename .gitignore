@@ -20,3 +20,6 @@ dist-ssr
 venv/
 /venv/
 .venv/
+
+.vercel
+.env*
