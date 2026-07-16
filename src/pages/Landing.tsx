@@ -24,15 +24,15 @@ export default function Landing() {
       {/* Dark frosted overlay to make text pop while keeping the background image beautifully visible */}
       <div className="absolute inset-0 bg-[#050505]/90 backdrop-blur-[5px] pointer-events-none z-0" />
       
-      <main className="pt-24 pb-36 min-h-screen relative z-10">
+      <main className="pt-16 pb-20 min-h-screen relative z-10">
         {/* Hero Section */}
-        <section className="relative px-margin-mobile pt-16 md:pt-24 max-w-5xl mx-auto text-center overflow-hidden z-10">
+        <section className="relative px-margin-mobile pt-4 md:pt-6 max-w-5xl mx-auto text-center overflow-hidden z-10">
           
           {/* Neural Badge */}
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-10 backdrop-blur-xl"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-5 backdrop-blur-xl"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(184,200,223,0.8)]"></span>
             <span className="text-[11px] font-bold tracking-[0.2em] text-on-surface-variant uppercase">Neural Interpretation Engine v1.0</span>
@@ -43,7 +43,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-display-lg text-4xl md:text-6xl lg:text-7xl mb-8 max-w-4xl mx-auto text-on-surface tracking-tight font-extrabold leading-tight"
+            className="font-display-lg text-4xl md:text-6xl lg:text-7xl mb-4 max-w-4xl mx-auto text-on-surface tracking-tight font-extrabold leading-tight"
           >
             Instant Sign Language <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Speech Synthesis</span>
@@ -54,7 +54,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-16 opacity-75 leading-relaxed text-sm md:text-base"
+            className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-6 opacity-75 leading-relaxed text-sm md:text-base"
           >
             A privacy-first local engine converting webcam sign gestures into grammatically polished speech instantly.
           </motion.p>
@@ -64,7 +64,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="flex flex-wrap items-center justify-center gap-3 mb-10 max-w-3xl mx-auto"
+            className="flex flex-wrap items-center justify-center gap-3 mb-6 max-w-3xl mx-auto"
           >
             {[
               { label: 'Latency', val: '< 18ms', icon: 'speed' },
@@ -86,7 +86,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 max-w-md mx-auto sm:max-w-none"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 max-w-md mx-auto sm:max-w-none"
           >
             <Link
               to="/live"
@@ -108,7 +108,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16 border border-white/5 py-8 text-center bg-black/40 rounded-3xl px-6 backdrop-blur-sm shadow-inner"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-10 border border-white/5 py-6 text-center bg-black/40 rounded-3xl px-6 backdrop-blur-sm shadow-inner"
           >
             {[
               { value: '23+', label: 'Active Gesture Signs', desc: 'Real-time vocab classes supported' },
