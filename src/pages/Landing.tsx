@@ -31,7 +31,7 @@ export default function Landing() {
         {/* Hero Section */}
         {/* Hero Section */}
         <section className="relative px-margin-mobile pt-8 md:pt-12 max-w-7xl mx-auto overflow-hidden z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-center text-center lg:text-left">
             
             {/* Left Column: Text Content & Actions */}
             <div className="space-y-6">
@@ -39,7 +39,7 @@ export default function Landing() {
               <motion.div 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mx-auto lg:mx-0"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(184,200,223,0.8)]"></span>
                 <span className="text-[11px] font-bold tracking-[0.2em] text-on-surface-variant uppercase font-mono">PSL Engine v1.0</span>
@@ -50,7 +50,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="font-display-lg text-4xl md:text-5xl lg:text-6xl max-w-xl text-on-surface tracking-tight font-extrabold leading-tight font-syne"
+                className="font-display-lg text-3xl sm:text-4xl md:text-5xl lg:text-6xl max-w-xl mx-auto lg:mx-0 text-on-surface tracking-tight font-extrabold leading-tight font-syne"
               >
                 Bridging the Silence.<br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Helping Pakistan's Deaf Communicate.</span>
@@ -61,7 +61,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="font-body-lg text-on-surface-variant max-w-xl opacity-80 leading-relaxed text-xs md:text-sm"
+                className="font-body-lg text-on-surface-variant max-w-xl mx-auto lg:mx-0 opacity-80 leading-relaxed text-xs md:text-sm"
               >
                 A free, open-source contribution to human accessibility. Sign2Speech translates Pakistan Sign Language (PSL) gestures into fluid spoken Urdu and English—100% locally and privately in your browser with zero cloud latency.
               </motion.p>
@@ -71,7 +71,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
-                className="grid grid-cols-2 gap-4 border border-white/5 py-4 px-4 bg-black/45 rounded-2xl backdrop-blur-sm shadow-inner max-w-xl"
+                className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-4 border border-white/5 py-4 px-4 bg-black/45 rounded-2xl backdrop-blur-sm shadow-inner max-w-xl mx-auto lg:mx-0"
               >
                 {[
                   { value: '23+', label: 'Active PSL Signs', desc: 'Real-time vocab classes supported' },
@@ -92,7 +92,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.28 }}
-                className="flex flex-wrap items-center gap-2 max-w-xl"
+                className="flex flex-wrap items-center justify-center lg:justify-start gap-2 max-w-xl mx-auto lg:mx-0"
               >
                 {[
                   { label: 'Latency', val: '< 18ms', icon: 'speed', color: 'text-emerald-400' },
@@ -113,7 +113,7 @@ export default function Landing() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 shadow-sm"
+                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 shadow-sm mx-auto lg:mx-0"
               >
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -127,7 +127,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.32 }}
-                className="pt-2 space-y-4"
+                className="pt-2 space-y-4 mx-auto lg:mx-0"
               >
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                   <Link
@@ -146,7 +146,7 @@ export default function Landing() {
                 </div>
                 
                 {/* Conversion Trust Badges */}
-                <div className="flex flex-wrap items-center gap-4 text-[9px] font-mono text-on-surface-variant opacity-80 pt-1">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-[9px] font-mono text-on-surface-variant opacity-80 pt-1">
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-[11px] text-emerald-400 font-bold">check_circle</span> 
                     Free & Open-Source
@@ -170,7 +170,7 @@ export default function Landing() {
               transition={{ delay: 0.4, duration: 0.7 }}
               className="relative w-full z-10"
             >
-              <div className="rounded-[2rem] p-2.5 apple-glass transition-transform duration-700 hover:scale-[1.01]">
+              <div className="rounded-[2rem] p-2.5 apple-glass transition-transform duration-700 hover:scale-[1.01] max-w-2xl mx-auto lg:mx-0">
                 <Link 
                   to="/live" 
                   className="relative rounded-[1.5rem] overflow-hidden aspect-video bg-surface-container-lowest border border-white/5 flex items-center justify-center bg-black group/preview block w-full h-full cursor-pointer"
@@ -278,7 +278,7 @@ export default function Landing() {
 
         {/* Real-World Impact Statistics Section */}
         <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-left">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-center md:text-left mx-auto md:mx-0">
             <div className="max-w-xl">
               <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">The Accessibility Gap</span>
               <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Why Assistive AI Translation Matters</h2>
@@ -327,7 +327,7 @@ export default function Landing() {
 
         {/* Supported Gesture Vocabulary Showcase */}
         <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
-          <div className="max-w-xl mb-12">
+          <div className="max-w-xl mb-12 text-center md:text-left mx-auto md:mx-0">
             <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Lexicon Database</span>
             <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Supported Sign Vocabulary</h2>
             <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed mt-2">
@@ -409,7 +409,7 @@ export default function Landing() {
         </section>
         {/* Interactive Inference Sandbox */}
         <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-center md:text-left mx-auto md:mx-0">
             <div className="max-w-xl">
               <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Simulated Sandbox</span>
               <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Inference Simulator</h2>
