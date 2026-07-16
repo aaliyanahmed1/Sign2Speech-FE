@@ -547,10 +547,23 @@ export default function SignSpeakTranslate() {
 
               {/* Offline fallback image preview */}
               {!cameraOn && (
-                <div 
-                  className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
-                  style={{ backgroundImage: "url('/male_signing.jpg')" }}
-                />
+                <>
+                  <div 
+                    className="absolute inset-0 w-full h-full opacity-50 bg-cover bg-center transition-all duration-300"
+                    style={{ backgroundImage: "url('/male_signing.jpg')" }}
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-3">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); handleToggleCamera(); }}
+                      className="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_0_25px_rgba(184,200,223,0.4)] hover:scale-105 active:scale-95 transition-all cursor-pointer border-0"
+                    >
+                      <span className="material-symbols-outlined text-3xl font-bold">videocam</span>
+                    </button>
+                    <p className="text-on-surface font-syne font-bold text-xs uppercase tracking-widest">
+                      Tap to Start Live Camera Stream
+                    </p>
+                  </div>
+                </>
               )}
 
               {/* Viewfinder Overlays */}
@@ -936,10 +949,23 @@ export default function SignSpeakTranslate() {
 
             {/* Offline fallback image preview */}
             {!cameraOn && (
-              <div 
-                className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
-                style={{ backgroundImage: "url('/male_signing.jpg')" }}
-              />
+              <>
+                <div 
+                  className="absolute inset-0 w-full h-full opacity-50 bg-cover bg-center transition-all duration-300"
+                  style={{ backgroundImage: "url('/male_signing.jpg')" }}
+                />
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-3">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleToggleCamera(); }}
+                    className="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_0_25px_rgba(184,200,223,0.4)] hover:scale-105 active:scale-95 transition-all cursor-pointer border-0"
+                  >
+                    <span className="material-symbols-outlined text-3xl font-bold">videocam</span>
+                  </button>
+                  <p className="text-on-surface font-syne font-bold text-xs uppercase tracking-widest">
+                    Tap to Start Practice Camera
+                  </p>
+                </div>
+              </>
             )}
 
             {/* Viewfinder Overlays */}
