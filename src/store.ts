@@ -19,6 +19,10 @@ interface SignSpeakState {
   autoSpeak: boolean;
   vibrationEnabled: boolean;
   handCalibration: { left: boolean; right: boolean };
+  facingMode: 'user' | 'environment';
+  bandwidthMode: 'high' | 'standard' | 'low';
+  setFacingMode: (mode: 'user' | 'environment') => void;
+  setBandwidthMode: (mode: 'high' | 'standard' | 'low') => void;
   // Ui
   currentResult: SignSpeakHistoryEntry | null;
   isAuthenticated: boolean;
@@ -67,6 +71,8 @@ export const useAppStore = create<SignSpeakState>((set) => ({
   autoSpeak: false,
   vibrationEnabled: true,
   handCalibration: { left: false, right: false },
+  facingMode: 'user',
+  bandwidthMode: 'standard',
   currentResult: null,
   isAuthenticated: false,
   user: null,
@@ -130,6 +136,7 @@ export const useAppStore = create<SignSpeakState>((set) => ({
     set((state) => ({
       handCalibration: { ...state.handCalibration, [side]: val },
     })),
-
+  setFacingMode: (mode) => set({ facingMode: mode }),
+  setBandwidthMode: (mode) => set({ bandwidthMode: mode }),
   setCurrentResult: (entry) => set({ currentResult: entry }),
 }));

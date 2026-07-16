@@ -137,6 +137,8 @@ export default function SignSpeakTranslate() {
     setCurrentResult, addHistoryEntry,
     useOllama,
     voiceId,
+    facingMode, setFacingMode,
+    bandwidthMode,
   } = useAppStore();
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -238,10 +240,11 @@ export default function SignSpeakTranslate() {
     },
   });
 
-  const startCamera = useCallback(async () => {
+  const startCamera = useCallback(async (modeOverride?: 'user' | 'environment') => {
     try {
+      const activeMode = modeOverride || facingMode;
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 640, height: 480, facingMode: 'environment' },
+        video: { width: 640, height: 480, facingMode: activeMode },
       });
       streamRef.current = stream;
       if (videoRef.current) {
@@ -250,11 +253,26 @@ export default function SignSpeakTranslate() {
       setCameraOn(true);
       setIsStreaming(true);
       connect();
-      addToast('Camera and gesture recognition started.', 'success');
+      addToast(`Camera started using ${activeMode === 'user' ? 'front' : 'rear'} lens.`, 'success');
     } catch {
       addToast('Camera access denied. Please allow camera permissions.', 'error');
     }
-  }, [connect, setCameraOn, setIsStreaming, addToast]);
+  }, [connect, setCameraOn, setIsStreaming, addToast, facingMode]);
+
+  const handleSwapCamera = useCallback(() => {
+    if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(30);
+    const newMode = facingMode === 'user' ? 'environment' : 'user';
+    setFacingMode(newMode);
+    if (cameraOn) {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+      }
+      startCamera(newMode);
+    } else {
+      addToast(`Camera mode set to ${newMode === 'user' ? 'front' : 'rear'}. Tap to start.`, 'info');
+    }
+  }, [cameraOn, facingMode, startCamera, vibrationEnabled, addToast]);
 
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
@@ -275,6 +293,8 @@ export default function SignSpeakTranslate() {
   useEffect(() => {
     if (!cameraOn || !connected || (translateMode !== 'sign2speech' && translateMode !== 'practice')) return;
 
+    const intervalTime = bandwidthMode === 'high' ? 200 : bandwidthMode === 'standard' ? 250 : 333;
+
     const intervalId = setInterval(() => {
       if (videoRef.current && canvasRef.current) {
         const video = videoRef.current;
@@ -289,10 +309,10 @@ export default function SignSpeakTranslate() {
           });
         }
       }
-    }, 250);
+    }, intervalTime);
 
     return () => clearInterval(intervalId);
-  }, [cameraOn, connected, sendMessage, translateMode]);
+  }, [cameraOn, connected, sendMessage, translateMode, bandwidthMode]);
 
   // Stop camera when switching to Speech-to-Sign
   useEffect(() => {
@@ -508,13 +528,26 @@ export default function SignSpeakTranslate() {
             title={cameraOn ? "Click to turn camera off" : "Click to turn camera on"}
           >
             {cameraOn ? (
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                className="absolute inset-0 w-full h-full object-cover opacity-85"
-              />
+              <>
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className="absolute inset-0 w-full h-full object-cover opacity-85"
+                />
+                {/* Floating Camera Swap FAB */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSwapCamera();
+                  }}
+                  className="absolute top-4 right-4 z-40 w-11 h-11 rounded-full bg-surface/85 backdrop-blur-md border border-outline-variant flex items-center justify-center text-primary active:scale-90 hover:text-secondary shadow-lg transition-all"
+                  title="Switch Camera Source"
+                >
+                  <span className="material-symbols-outlined text-[20px]">flip_camera_ios</span>
+                </button>
+              </>
             ) : (
               <div 
                 className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
@@ -735,13 +768,26 @@ export default function SignSpeakTranslate() {
             title={cameraOn ? "Click to turn camera off" : "Click to turn camera on"}
           >
             {cameraOn ? (
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                className="absolute inset-0 w-full h-full object-cover opacity-85"
-              />
+              <>
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className="absolute inset-0 w-full h-full object-cover opacity-85"
+                />
+                {/* Floating Camera Swap FAB */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSwapCamera();
+                  }}
+                  className="absolute top-4 right-4 z-40 w-11 h-11 rounded-full bg-surface/85 backdrop-blur-md border border-outline-variant flex items-center justify-center text-primary active:scale-90 hover:text-secondary shadow-lg transition-all"
+                  title="Switch Camera Source"
+                >
+                  <span className="material-symbols-outlined text-[20px]">flip_camera_ios</span>
+                </button>
+              </>
             ) : (
               <div 
                 className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
@@ -880,8 +926,13 @@ export default function SignSpeakTranslate() {
         </>
       )}
 
-      {/* Hidden Canvas for video processing */}
-      <canvas ref={canvasRef} className="hidden" width="640" height="480" />
+      {/* Hidden Canvas for optimized video processing */}
+      <canvas 
+        ref={canvasRef} 
+        className="hidden" 
+        width={bandwidthMode === 'high' ? 640 : bandwidthMode === 'standard' ? 480 : 320} 
+        height={bandwidthMode === 'high' ? 480 : bandwidthMode === 'standard' ? 360 : 240} 
+      />
     </div>
   );
 }

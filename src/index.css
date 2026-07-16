@@ -252,3 +252,13 @@ body {
   -webkit-backdrop-filter: blur(20px) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4) !important;
 }
+
+/* Mobile & Touch Utility Alignment */
+.px-margin-mobile {
+  padding-left: 1.25rem !important;
+  padding-right: 1.25rem !important;
+}
+
+.h-touch-target-min {
+  height: 56px !important;
+}

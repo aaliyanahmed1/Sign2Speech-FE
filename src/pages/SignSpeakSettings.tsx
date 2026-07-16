@@ -11,10 +11,14 @@ export default function SignSpeakSettings() {
     voicePitch,
     voiceId,
     vibrationEnabled,
+    facingMode,
+    bandwidthMode,
     setVoiceSpeed,
     setVoicePitch,
     setVoiceId,
     setVibrationEnabled,
+    setFacingMode,
+    setBandwidthMode,
     clearAllHistory,
     logoutUser
   } = useAppStore();
@@ -173,6 +177,76 @@ export default function SignSpeakSettings() {
                 setVoicePitch(parseFloat(e.target.value));
               }}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile & Hardware Optimization Section */}
+      <section className="space-y-6 shrink-0 text-left">
+        <div className="flex items-center gap-3 text-on-surface">
+          <span className="material-symbols-outlined text-primary text-2xl">settings_system_daydream</span>
+          <h2 className="text-headline-md font-headline-md font-syne">Mobile & Network Optimization</h2>
+        </div>
+        <div className="bg-surface rounded-xl p-6 border border-outline-variant space-y-8 shadow-sm">
+          {/* Default Lens Selector */}
+          <div className="space-y-3">
+            <label className="text-body-lg font-bold text-on-surface block text-xs font-mono uppercase tracking-wider">Default Camera Lens</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[
+                { id: 'user', name: 'Front Camera', description: 'Selfie view (signing oneself)', icon: 'portrait' },
+                { id: 'environment', name: 'Rear Camera', description: 'World view (interpreting others)', icon: 'photo_camera' },
+              ].map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => {
+                    if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(15);
+                    setFacingMode(c.id as any);
+                    addToast(`Default camera set to ${c.name}`, 'info');
+                  }}
+                  className={`p-4 rounded-xl border-2 flex items-start gap-3 active:scale-[0.98] transition-all cursor-pointer text-left w-full ${
+                    facingMode === c.id
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-outline-variant bg-surface-variant text-on-surface-variant hover:bg-surface-variant/40'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-2xl shrink-0 mt-0.5">{c.icon}</span>
+                  <div className="min-w-0">
+                    <p className="font-bold text-xs uppercase tracking-wider font-syne">{c.name}</p>
+                    <p className="text-[10px] text-on-surface-variant mt-0.5">{c.description}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quality & Bandwidth Optimizer */}
+          <div className="space-y-3">
+            <label className="text-body-lg font-bold text-on-surface block text-xs font-mono uppercase tracking-wider">Stream Quality (Mobile Bandwidth Optimizer)</label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { id: 'low', name: 'Low', desc: '320x240 @ 3 FPS', detail: 'Saves 75% data' },
+                { id: 'standard', name: 'Standard', desc: '480x360 @ 4 FPS', detail: 'Balanced usage' },
+                { id: 'high', name: 'High', desc: '640x480 @ 5 FPS', detail: 'Highest accuracy' },
+              ].map((q) => (
+                <button
+                  key={q.id}
+                  onClick={() => {
+                    if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(15);
+                    setBandwidthMode(q.id as any);
+                    addToast(`Stream profile set to ${q.name}`, 'info');
+                  }}
+                  className={`p-3 rounded-xl border-2 flex flex-col items-center justify-center text-center active:scale-[0.98] transition-all cursor-pointer w-full ${
+                    bandwidthMode === q.id
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-outline-variant bg-surface-variant text-on-surface-variant hover:bg-surface-variant/40'
+                  }`}
+                >
+                  <p className="font-bold text-xs uppercase tracking-wider font-syne">{q.name}</p>
+                  <p className="text-[9px] font-mono mt-1 text-on-surface-variant">{q.desc}</p>
+                  <p className="text-[8px] text-outline mt-0.5">{q.detail}</p>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
