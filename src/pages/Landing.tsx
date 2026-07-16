@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 export default function Landing() {
   const [mockSentence, setMockSentence] = useState('Awaiting sign input...');
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [simulatedSign, setSimulatedSign] = useState<string>('HELLO');
+  const [simulatedSentence, setSimulatedSentence] = useState('Hello.');
 
   // Simulate live translation preview on the landing page for visual engagement
   useEffect(() => {
@@ -356,6 +359,145 @@ export default function Landing() {
                 <div className="w-10 h-10 bg-primary/15 text-primary rounded-xl flex items-center justify-center font-mono font-bold text-xs mb-4 border border-primary/20">{p.num}</div>
                 <h4 className="font-bold text-sm mb-2">{p.title}</h4>
                 <p className="text-xs text-on-surface-variant leading-relaxed opacity-75">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        {/* Interactive Inference Sandbox */}
+        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+            <div className="max-w-xl">
+              <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Simulated Sandbox</span>
+              <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Inference Simulator</h2>
+              <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed mt-2">
+                Click any vocabulary gesture below to simulate hand keypoint tracking and grammar translation in real-time.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            {/* Control card: List of selectable signs */}
+            <div className="lg:col-span-1 apple-glass rounded-[2rem] p-6 border border-white/5 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <span className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest block border-b border-white/5 pb-2">Select Gesture</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { id: 'HELLO', text: 'HELLO', sentence: 'Hello.' },
+                    { id: 'HELP', text: 'HELP', sentence: 'Do you need help?' },
+                    { id: 'SCHOOL', text: 'SCHOOL', sentence: 'I am going to school.' },
+                    { id: 'FRIEND', text: 'FRIEND', sentence: 'You are my friend.' },
+                    { id: 'HOME', text: 'HOME', sentence: 'Let us go home.' },
+                    { id: 'SORRY', text: 'SORRY', sentence: 'I am extremely sorry.' }
+                  ].map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => {
+                        setSimulatedSign(s.id);
+                        setSimulatedSentence(s.sentence);
+                      }}
+                      className={`py-3 rounded-xl font-mono text-xs font-semibold tracking-wider transition-all border cursor-pointer active:scale-95 ${
+                        simulatedSign === s.id
+                          ? 'bg-primary border-primary text-on-primary-fixed shadow-md'
+                          : 'bg-white/5 border-white/5 text-on-surface-variant hover:bg-white/10 hover:text-on-surface'
+                      }`}
+                    >
+                      {s.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 text-[11px] text-on-surface-variant leading-relaxed font-mono">
+                <span className="font-bold text-primary">Simulation Active:</span> Keypoint extraction matrices are drawn programmatically.
+              </div>
+            </div>
+
+            {/* Viewport card: Simulated skeletal hands tracking visualizer */}
+            <div className="lg:col-span-2 apple-glass-dark rounded-[2.5rem] p-8 border border-white/5 flex flex-col justify-between relative overflow-hidden bg-black">
+              {/* Subtle grid lines background */}
+              <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+              
+              <div className="flex justify-between items-start z-10 border-b border-white/5 pb-4">
+                <div>
+                  <span className="text-[9px] font-mono text-primary uppercase tracking-widest block">Camera Viewfinder (Simulated)</span>
+                  <h4 className="font-syne font-bold text-lg text-on-surface uppercase mt-1">Telemetry Canvas</h4>
+                </div>
+                <div className="px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[10px] font-mono font-semibold uppercase tracking-wider animate-pulse">
+                  Engine Ready
+                </div>
+              </div>
+
+              {/* Skeletal Hands Canvas Simulation */}
+              <div className="h-48 flex items-center justify-center relative my-4">
+                {/* Simulated Hand Skeletal structure mapping */}
+                <div className="relative w-72 h-40 border border-white/5 rounded-2xl bg-white/5 flex items-center justify-center overflow-hidden">
+                  <div className="absolute top-[45%] left-[40%] w-2 h-2 bg-primary rounded-full shadow-[0_0_12px_rgba(184,200,223,0.8)] animate-pulse" />
+                  <div className="absolute top-[38%] left-[48%] w-2.5 h-2.5 bg-secondary rounded-full shadow-[0_0_12px_rgba(200,198,200,0.8)]" />
+                  <div className="absolute top-[52%] left-[35%] w-2 h-2 bg-primary rounded-full shadow-[0_0_12px_rgba(184,200,223,0.8)]" />
+                  <div className="absolute top-[32%] left-[42%] w-2 h-2 bg-tertiary rounded-full shadow-[0_0_12px_rgba(173,198,255,0.8)] animate-bounce" />
+                  
+                  {/* Dynamic sign indicator details */}
+                  <div className="absolute bottom-2 left-2 text-[9px] font-mono text-on-surface-variant uppercase">Sign Detected: {simulatedSign}</div>
+                  
+                  <svg className="absolute inset-0 w-full h-full stroke-primary/30 stroke-[1.5]" fill="none">
+                    <line x1="40%" y1="45%" x2="48%" y2="38%" />
+                    <line x1="48%" y1="38%" x2="42%" y2="32%" />
+                    <line x1="40%" y1="45%" x2="35%" y2="52%" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Grammar Translation HUD Output */}
+              <div className="glass-card rounded-2xl p-5 border border-white/10 text-left z-10 space-y-1 bg-[#0a0c0c]/85">
+                <span className="text-[9px] font-mono text-primary uppercase tracking-widest block">Grammar Refined output</span>
+                <p className="text-base font-bold text-on-surface font-syne leading-relaxed">
+                  "{simulatedSentence}"
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Interactive FAQ Section */}
+        <section className="px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto mb-28 relative z-10 border-t border-white/5 pt-20 text-left">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Frequently Asked</span>
+            <h2 className="text-3xl font-syne font-bold leading-tight">Got Questions?</h2>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: "Does Sign2Speech process my video on the cloud?",
+                a: "No. Sign2Speech is designed as a local-first application. All video capturing and skeletal tracking processes run directly in your local browser environment. No video stream is ever uploaded or stored, ensuring total data privacy."
+              },
+              {
+                q: "What sign languages are supported?",
+                a: "The core model is trained on a 23-gesture subset of American Sign Language (ASL) and British Sign Language (BSL), including location directions, conversation greetings, action verbs, and system triggers."
+              },
+              {
+                q: "How do I download and install the app on iOS?",
+                a: "Simply open your deployment link in Safari on iOS, tap the Share icon, and select 'Add to Home Screen'. The app will install with its high-res icon and open in native fullscreen standalone mode."
+              },
+              {
+                q: "Is a dedicated GPU required to run this engine?",
+                a: "No. The neural networks and deep keypoint architectures are highly optimized and run efficiently on standard CPU architectures (including mobile phone processors), delivering smooth real-time performance."
+              }
+            ].map((faq, idx) => (
+              <div key={idx} className="apple-glass rounded-[1.5rem] border border-white/5 overflow-hidden transition-all duration-300">
+                <button
+                  onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                  className="w-full p-6 text-left flex justify-between items-center bg-transparent border-0 cursor-pointer active:bg-white/5 text-on-surface font-syne font-bold text-sm"
+                >
+                  <span>{faq.q}</span>
+                  <span className={`material-symbols-outlined transition-transform duration-300 ${activeFaq === idx ? 'rotate-180 text-primary' : 'text-on-surface-variant'}`}>
+                    expand_more
+                  </span>
+                </button>
+                {activeFaq === idx && (
+                  <div className="px-6 pb-6 text-xs text-on-surface-variant leading-relaxed animate-fade-in border-t border-white/5 pt-4">
+                    {faq.a}
+                  </div>
+                )}
               </div>
             ))}
           </div>
