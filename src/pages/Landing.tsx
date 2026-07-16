@@ -29,217 +29,221 @@ export default function Landing() {
       
       <main className="pt-16 pb-20 min-h-screen relative z-10">
         {/* Hero Section */}
-        <section className="relative px-margin-mobile pt-4 md:pt-6 max-w-5xl mx-auto text-center overflow-hidden z-10">
-          
-          {/* Neural Badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-5 backdrop-blur-xl"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(184,200,223,0.8)]"></span>
-            <span className="text-[11px] font-bold tracking-[0.2em] text-on-surface-variant uppercase">Neural Interpretation Engine v1.0</span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="font-display-lg text-4xl md:text-6xl lg:text-7xl mb-4 max-w-4xl mx-auto text-on-surface tracking-tight font-extrabold leading-tight"
-          >
-            Bridging the Silence.<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Helping the Deaf Communicate.</span>
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-6 opacity-75 leading-relaxed text-sm md:text-base"
-          >
-            A free, open-source contribution to human accessibility. Sign2Speech runs entirely on-device to translate sign gestures into fluid spoken words, helping Deaf and Hard of Hearing individuals connect with the world instantly and privately.
-          </motion.p>
-
-          {/* Active Status Callout Banner */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.22 }}
-            className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 mb-8 max-w-md mx-auto shadow-sm"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-[10px] font-bold tracking-wider text-emerald-400 uppercase font-mono">Open Accessibility Project &mdash; Free & Local</span>
-          </motion.div>
-
-          {/* Quick Specs / Telemetry Badges */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="flex flex-wrap items-center justify-center gap-3 mb-6 max-w-3xl mx-auto"
-          >
-            {[
-              { label: 'Latency', val: '< 18ms', icon: 'speed', color: 'text-emerald-400' },
-              { label: 'Inference', val: 'Local Neural', icon: 'neurology', color: 'text-cyan-400' },
-              { label: 'Vocabulary', val: '23 Actions', icon: 'gesture', color: 'text-amber-400' },
-              { label: 'Data Privacy', val: '100% Local', icon: 'lock', color: 'text-blue-400' },
-              { label: 'Audio Synthesis', val: 'Neural TTS', icon: 'keyboard_voice', color: 'text-purple-400' }
-            ].map((s) => (
-              <div key={s.label} className="apple-glass px-4 py-2 rounded-full flex items-center gap-2 border border-white/5 shadow-sm text-[10px] font-semibold font-mono text-on-surface-variant">
-                <span className={`material-symbols-outlined text-sm ${s.color}`}>{s.icon}</span>
-                <span className="uppercase tracking-wider">{s.label}:</span>
-                <span className="text-on-surface font-sans font-bold">{s.val}</span>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* CTAs */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-10"
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto sm:max-w-none mb-4">
-              <Link
-                to="/live"
-                className="w-full sm:w-auto bg-gradient-to-r from-primary via-secondary to-primary text-on-primary-fixed font-bold px-12 py-4.5 rounded-full shadow-[0_0_30px_rgba(184,200,223,0.25)] flex items-center justify-center gap-3 transition-all hover:scale-[1.03] active:scale-[0.97] no-underline cursor-pointer border-0"
-              >
-                Launch Free Interpreter
-                <span className="material-symbols-outlined text-xl">arrow_forward</span>
-              </Link>
-              <Link
-                to="/about"
-                className="w-full sm:w-auto apple-glass-dark text-on-surface border border-white/10 hover:border-white/20 font-bold px-12 py-4.5 rounded-full transition-all hover:bg-white/10 active:scale-[0.97] no-underline cursor-pointer flex items-center justify-center"
-              >
-                Read Architecture
-              </Link>
-            </div>
+        {/* Hero Section */}
+        <section className="relative px-margin-mobile pt-8 md:pt-12 max-w-5xl mx-auto overflow-hidden z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
             
-            {/* Conversion Trust Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] font-mono text-on-surface-variant opacity-80 mt-3">
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
-                Free & Open-Source
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
-                100% Local Privacy
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
-                No Account Required
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Quick Metrics Counters Grid */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-10 border border-white/5 py-6 text-center bg-black/40 rounded-3xl px-6 backdrop-blur-sm shadow-inner"
-          >
-            {[
-              { value: '23+', label: 'Active Gesture Signs', desc: 'Real-time vocab classes supported' },
-              { value: '18ms', label: 'Local Neural Latency', desc: 'Instant frame-by-frame inference' },
-              { value: '100%', label: 'On-Device Execution', desc: 'Zero cloud dependencies, edge secure' },
-              { value: 'Dual', label: 'Translation Modes', desc: 'Two-way audio & visual interpreter' }
-            ].map((c) => (
-              <div key={c.label} className="space-y-1.5 text-center">
-                <p className="font-syne text-3xl font-extrabold text-primary">{c.value}</p>
-                <p className="text-[11px] font-bold text-on-surface tracking-wider uppercase">{c.label}</p>
-                <p className="text-[9px] text-on-surface-variant opacity-75 leading-relaxed">{c.desc}</p>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Main Interface Preview Simulator */}
-          <motion.div 
-            initial={{ opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="relative max-w-4xl mx-auto mb-32 px-4 md:px-0"
-          >
-            <div className="rounded-[2.5rem] p-3 apple-glass transition-transform duration-700 hover:scale-[1.01]">
-              <Link 
-                to="/live" 
-                className="relative rounded-[2rem] overflow-hidden aspect-video bg-surface-container-lowest border border-white/5 flex items-center justify-center bg-black group/preview block w-full h-full cursor-pointer"
+            {/* Left Column: Text Content & Actions */}
+            <div className="space-y-6">
+              {/* Neural Badge */}
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl"
               >
-                <img 
-                  alt="User signing mockup" 
-                  className="w-full h-full object-cover opacity-50 transition-opacity duration-300 group-hover/preview:opacity-40" 
-                  src="/male_signing.jpg"
-                />
-                
-                {/* Large Pulsing Central Play Button */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-r from-primary/80 to-secondary/80 text-on-primary-fixed flex items-center justify-center shadow-[0_0_40px_rgba(184,200,223,0.3)] group-hover/preview:scale-110 group-hover/preview:shadow-[0_0_55px_rgba(184,200,223,0.4)] transition-all duration-300">
-                    <span className="material-symbols-outlined text-4xl font-extrabold ml-1">play_arrow</span>
-                  </div>
-                  <div className="apple-glass px-6 py-2.5 rounded-full border border-white/10 text-on-surface font-syne font-bold text-xs uppercase tracking-widest group-hover/preview:border-primary/30 transition-all">
-                    Launch Live Stream Interpreter
-                  </div>
-                </div>
-                
-                {/* Simulated Hand Tracking Overlays */}
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-[48%] left-[45%] w-2 h-2 bg-primary rounded-full shadow-[0_0_12px_rgba(184,200,223,0.8)] animate-pulse" />
-                  <div className="absolute top-[42%] left-[52%] w-2.5 h-2.5 bg-secondary rounded-full shadow-[0_0_12px_rgba(200,198,200,0.8)]" />
-                  <div className="absolute top-[55%] left-[40%] w-2 h-2 bg-primary rounded-full shadow-[0_0_12px_rgba(184,200,223,0.8)]" />
-                  <div className="absolute top-[38%] left-[48%] w-2 h-2 bg-tertiary rounded-full shadow-[0_0_12px_rgba(173,198,255,0.8)]" />
-                  <svg className="absolute inset-0 w-full h-full stroke-primary/30 stroke-[1.5]" fill="none">
-                    <line x1="45%" y1="48%" x2="52%" y2="42%" />
-                    <line x1="52%" y1="42%" x2="48%" y2="38%" />
-                    <line x1="45%" y1="48%" x2="40%" y2="55%" />
-                  </svg>
-                </div>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(184,200,223,0.8)]"></span>
+                <span className="text-[11px] font-bold tracking-[0.2em] text-on-surface-variant uppercase font-mono">PSL Engine v1.0</span>
+              </motion.div>
 
-                {/* Box tag overlay */}
-                <div className="absolute top-[32%] left-[32%] border border-primary bg-primary/10 backdrop-blur-md text-primary text-[10px] font-mono px-2.5 py-0.5 rounded shadow-lg uppercase tracking-wider">
-                  Tracking Active
-                </div>
+              {/* Headline */}
+              <motion.h1 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="font-display-lg text-4xl md:text-5xl lg:text-6xl max-w-xl text-on-surface tracking-tight font-extrabold leading-tight font-syne"
+              >
+                Bridging the Silence.<br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Helping Pakistan's Deaf Communicate.</span>
+              </motion.h1>
 
-                {/* Overlay HUD Elements */}
-                <div className="absolute top-6 left-6">
-                  <div className="flex gap-2 px-5 py-2.5 apple-glass-dark rounded-full border border-white/10">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)] animate-pulse"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
-                    <span className="ml-2 text-white/80 text-[10px] uppercase tracking-[0.15em] font-bold font-mono">Pipeline Simulator</span>
-                  </div>
+              {/* Subheadline */}
+              <motion.p 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="font-body-lg text-on-surface-variant max-w-xl opacity-80 leading-relaxed text-xs md:text-sm"
+              >
+                A free, open-source contribution to human accessibility. Sign2Speech translates Pakistan Sign Language (PSL) gestures into fluid spoken Urdu and English—100% locally and privately in your browser with zero cloud latency.
+              </motion.p>
+
+              {/* Active Status Callout Banner */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.22 }}
+                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 shadow-sm"
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+                <span className="text-[9px] font-bold tracking-wider text-emerald-400 uppercase font-mono font-semibold">Open Accessibility Project &mdash; Free & Local</span>
+              </motion.div>
+
+              {/* CTAs */}
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="pt-2 space-y-4"
+              >
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <Link
+                    to="/live"
+                    className="w-full sm:w-auto bg-gradient-to-r from-primary via-secondary to-primary text-on-primary-fixed font-bold px-10 py-4 rounded-full shadow-[0_0_30px_rgba(184,200,223,0.25)] flex items-center justify-center gap-3 transition-all hover:scale-[1.03] active:scale-[0.97] no-underline cursor-pointer border-0"
+                  >
+                    Launch Free Interpreter
+                    <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                  </Link>
+                  <Link
+                    to="/about"
+                    className="w-full sm:w-auto apple-glass-dark text-on-surface border border-white/10 hover:border-white/20 font-bold px-10 py-4 rounded-full transition-all hover:bg-white/10 active:scale-[0.97] no-underline cursor-pointer flex items-center justify-center"
+                  >
+                    Read Architecture
+                  </Link>
                 </div>
                 
-                <div className="absolute bottom-6 right-6">
-                  <div className="flex items-center gap-3 px-6 py-3 apple-glass-dark rounded-2xl text-primary border border-primary/20">
-                    <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-[0_0_12px_rgba(184,200,223,0.8)]"></span>
-                    <span className="font-bold text-[10px] uppercase tracking-widest font-mono">Active Streaming</span>
-                  </div>
+                {/* Conversion Trust Badges */}
+                <div className="flex flex-wrap items-center gap-4 text-[9px] font-mono text-on-surface-variant opacity-80 pt-1">
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[11px] text-emerald-400 font-bold">check_circle</span> 
+                    Free & Open-Source
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[11px] text-emerald-400 font-bold">check_circle</span> 
+                    100% Local Privacy
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[11px] text-emerald-400 font-bold">check_circle</span> 
+                    No Account Required
+                  </span>
                 </div>
-              </Link>
+              </motion.div>
             </div>
 
-            {/* Floating Semantic Cards */}
-            <div className="hidden lg:block absolute -left-20 top-1/4 apple-glass p-6 rounded-2xl w-56 text-left animate-float">
-              <div className="text-[10px] font-bold text-primary uppercase tracking-[0.15em] mb-3">Hand Tracking</div>
-              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
-                <div className="h-full bg-primary w-[92%] shadow-[0_0_12px_rgba(184,200,223,0.6)]"></div>
+            {/* Right Column: Visual Mockup / Interface Simulator */}
+            <motion.div 
+              initial={{ opacity: 0, y: 35 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.7 }}
+              className="relative w-full z-10"
+            >
+              <div className="rounded-[2rem] p-2.5 apple-glass transition-transform duration-700 hover:scale-[1.01]">
+                <Link 
+                  to="/live" 
+                  className="relative rounded-[1.5rem] overflow-hidden aspect-video bg-surface-container-lowest border border-white/5 flex items-center justify-center bg-black group/preview block w-full h-full cursor-pointer"
+                >
+                  <img 
+                    alt="User signing mockup" 
+                    className="w-full h-full object-cover opacity-50 transition-opacity duration-300 group-hover/preview:opacity-40" 
+                    src="/male_signing.jpg"
+                  />
+                  
+                  {/* Large Pulsing Central Play Button */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/80 to-secondary/80 text-on-primary-fixed flex items-center justify-center shadow-[0_0_40px_rgba(184,200,223,0.3)] group-hover/preview:scale-110 group-hover/preview:shadow-[0_0_55px_rgba(184,200,223,0.4)] transition-all duration-300">
+                      <span className="material-symbols-outlined text-3xl font-extrabold ml-1">play_arrow</span>
+                    </div>
+                    <div className="apple-glass px-5 py-2 rounded-full border border-white/10 text-on-surface font-syne font-bold text-[10px] uppercase tracking-widest group-hover/preview:border-primary/30 transition-all">
+                      Launch PSL Interpreter
+                    </div>
+                  </div>
+
+                  {/* Simulated Hand Tracking Overlays */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-[48%] left-[45%] w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_12px_rgba(184,200,223,0.8)] animate-pulse" />
+                    <div className="absolute top-[42%] left-[52%] w-2 h-2 bg-secondary rounded-full shadow-[0_0_12px_rgba(200,198,200,0.8)]" />
+                    <div className="absolute top-[55%] left-[40%] w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_12px_rgba(184,200,223,0.8)]" />
+                    <div className="absolute top-[38%] left-[48%] w-1.5 h-1.5 bg-tertiary rounded-full shadow-[0_0_12px_rgba(173,198,255,0.8)]" />
+                    <svg className="absolute inset-0 w-full h-full stroke-primary/30 stroke-[1.5]" fill="none">
+                      <line x1="45%" y1="48%" x2="52%" y2="42%" />
+                      <line x1="52%" y1="42%" x2="48%" y2="38%" />
+                      <line x1="45%" y1="48%" x2="40%" y2="55%" />
+                    </svg>
+                  </div>
+
+                  {/* Box tag overlay */}
+                  <div className="absolute top-[32%] left-[32%] border border-primary bg-primary/10 backdrop-blur-md text-primary text-[9px] font-mono px-2 py-0.5 rounded shadow-lg uppercase tracking-wider">
+                    PSL Active
+                  </div>
+
+                  {/* Overlay HUD Elements */}
+                  <div className="absolute top-4 left-4">
+                    <div className="flex gap-1.5 px-4 py-2 apple-glass-dark rounded-full border border-white/10">
+                      <span className="w-2 h-2 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)] animate-pulse"></span>
+                      <span className="w-2 h-2 rounded-full bg-yellow-500/80"></span>
+                      <span className="w-2 h-2 rounded-full bg-green-500/80"></span>
+                      <span className="ml-2 text-white/80 text-[9px] uppercase tracking-[0.15em] font-bold font-mono">PSL Pipeline</span>
+                    </div>
+                  </div>
+
+                  {/* Real-time Dynamic Output HUD */}
+                  <div className="absolute top-4 right-4 max-w-[200px] z-20">
+                    <div className="flex flex-col gap-0.5 px-3.5 py-1.5 apple-glass rounded-xl border border-white/10 text-left bg-black/60 backdrop-blur-md">
+                      <span className="text-[7px] font-mono text-primary uppercase tracking-widest block">Live Output</span>
+                      <p className="text-[10px] font-bold text-on-surface font-syne truncate">
+                        "{mockSentence}"
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute bottom-4 right-4">
+                    <div className="flex items-center gap-2.5 px-4 py-2 apple-glass-dark rounded-2xl text-primary border border-primary/20">
+                      <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_12px_rgba(184,200,223,0.8)]"></span>
+                      <span className="font-bold text-[9px] uppercase tracking-widest font-mono">Streaming</span>
+                    </div>
+                  </div>
+                </Link>
               </div>
-              <div className="text-[11px] text-on-surface-variant opacity-70">92% Inference Confidence</div>
-            </div>
+            </motion.div>
 
-            <div className="hidden lg:block absolute -right-20 bottom-1/4 apple-glass p-6 rounded-2xl w-64 text-left animate-float" style={{ animationDelay: '-4s' }}>
-              <div className="text-[10px] font-bold text-primary uppercase tracking-[0.15em] mb-3">Refinement Output</div>
-              <p className="text-xs text-on-surface font-semibold leading-normal">
-                "{mockSentence}"
-              </p>
-            </div>
-          </motion.div>
+          </div>
+
+          {/* Under-fold: Telemetry and Counters Grid layout cleanly aligned below */}
+          <div className="mt-16 space-y-8">
+            {/* Quick Specs / Telemetry Badges */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+              className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto"
+            >
+              {[
+                { label: 'Latency', val: '< 18ms', icon: 'speed', color: 'text-emerald-400' },
+                { label: 'Inference', val: 'Local Neural', icon: 'neurology', color: 'text-cyan-400' },
+                { label: 'Vocabulary', val: '23 PSL signs', icon: 'gesture', color: 'text-amber-400' },
+                { label: 'Data Privacy', val: '100% Local', icon: 'lock', color: 'text-blue-400' },
+                { label: 'Audio Synthesis', val: 'Urdu & English TTS', icon: 'keyboard_voice', color: 'text-purple-400' }
+              ].map((s) => (
+                <div key={s.label} className="apple-glass px-4 py-2 rounded-full flex items-center gap-2 border border-white/5 shadow-sm text-[10px] font-semibold font-mono text-on-surface-variant">
+                  <span className={`material-symbols-outlined text-sm ${s.color}`}>{s.icon}</span>
+                  <span className="uppercase tracking-wider">{s.label}:</span>
+                  <span className="text-on-surface font-sans font-bold">{s.val}</span>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Quick Metrics Counters Grid */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16 border border-white/5 py-6 text-center bg-black/40 rounded-3xl px-6 backdrop-blur-sm shadow-inner"
+            >
+              {[
+                { value: '23+', label: 'Active PSL Signs', desc: 'Real-time vocab classes supported' },
+                { value: '18ms', label: 'Local Neural Latency', desc: 'Instant frame-by-frame inference' },
+                { value: '100%', label: 'On-Device Execution', desc: 'Zero cloud dependencies, edge secure' },
+                { value: 'Dual', label: 'Translation Modes', desc: 'Two-way audio & visual interpreter' }
+              ].map((c) => (
+                <div key={c.label} className="space-y-1.5 text-center">
+                  <p className="font-syne text-3xl font-extrabold text-primary">{c.value}</p>
+                  <p className="text-[11px] font-bold text-on-surface tracking-wider uppercase">{c.label}</p>
+                  <p className="text-[9px] text-on-surface-variant opacity-75 leading-relaxed">{c.desc}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </section>
 
         {/* Features Grid */}
