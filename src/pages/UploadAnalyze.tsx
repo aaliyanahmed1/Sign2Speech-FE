@@ -114,9 +114,9 @@ export default function UploadAnalyze() {
     addToast('Playing local voice offline fallback', 'info');
   };
 
-  return (
-    <div className="max-w-4xl mx-auto p-6 md:p-8 pt-10 font-sans space-y-8">
-      <div>
+    return (
+    <div className="max-w-5xl mx-auto p-6 md:p-8 pt-10 font-sans space-y-8 px-margin-mobile">
+      <div className="text-left">
         <h2 className="text-3xl md:text-4xl font-syne font-bold text-on-surface">Image Detection Engine</h2>
         <p className="text-on-surface-variant mt-1.5 text-sm leading-relaxed">
           Upload a static sign language frame. The AI pipeline will infer the gesture, refine the context, and synthesize speech.
@@ -126,8 +126,8 @@ export default function UploadAnalyze() {
       {/* Drop zone */}
       <div
         className={`w-full aspect-video border-2 border-dashed ${
-          result ? 'border-outline-variant opacity-50 pointer-events-none' : file ? 'border-primary' : 'border-outline'
-        } rounded-2xl bg-surface flex flex-col items-center justify-center relative overflow-hidden transition-all hover:bg-surface-variant/40 shadow-sm`}
+          result ? 'border-white/5 opacity-50 pointer-events-none' : file ? 'border-primary' : 'border-white/10'
+        } rounded-[2rem] apple-glass-dark flex flex-col items-center justify-center relative overflow-hidden transition-all hover:bg-white/5 shadow-inner`}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >
@@ -143,11 +143,11 @@ export default function UploadAnalyze() {
 
         {preview ? (
           <div className="absolute inset-0 p-4 flex items-center justify-center">
-            <img src={preview} alt="Upload preview" className="max-h-full max-w-full rounded-xl object-contain shadow-md" />
+            <img src={preview} alt="Upload preview" className="max-h-full max-w-full rounded-2xl object-contain shadow-lg border border-white/5" />
           </div>
         ) : (
           <div className="text-center pointer-events-none p-6 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto border border-primary/20">
+            <div className="w-16 h-16 rounded-[1.25rem] apple-glass flex items-center justify-center mx-auto border border-white/10">
               <UploadCloud className="w-8 h-8 text-primary" />
             </div>
             <div>
@@ -168,7 +168,7 @@ export default function UploadAnalyze() {
 
       {/* File info bar */}
       {!result && (
-        <div className="flex justify-between items-center bg-surface border border-outline-variant p-3.5 rounded-xl shadow-sm">
+        <div className="flex justify-between items-center apple-glass-dark border border-white/5 p-4 rounded-[1.5rem] shadow-md">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-lg bg-secondary/15 flex items-center justify-center shrink-0 border border-secondary/20">
               <ImageIcon className="text-secondary" size={18} />
@@ -192,10 +192,10 @@ export default function UploadAnalyze() {
             <button
               onClick={handleUpload}
               disabled={!file || processing}
-              className={`px-6 py-2.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-6 py-3 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer border-0 ${
                 !file || processing
-                  ? 'bg-surface-variant text-on-surface-variant/40 border border-outline-variant cursor-not-allowed'
-                  : 'bg-primary text-white shadow-md shadow-primary/10 hover:opacity-95'
+                  ? 'bg-white/5 text-on-surface-variant/40 border border-white/5 cursor-not-allowed'
+                  : 'bg-white text-black hover:brightness-110 active:scale-95 shadow-lg'
               }`}
             >
               {processing ? (
@@ -215,7 +215,7 @@ export default function UploadAnalyze() {
       {/* Result */}
       {result && (
         <div className="animate-in slide-in-from-bottom-4 fade-in duration-500">
-          <div className="bg-surface border border-outline-variant rounded-2xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center">
+          <div className="apple-glass border border-white/10 rounded-[2rem] p-8 shadow-lg flex flex-col md:flex-row gap-8 items-center">
             <div className="flex-1 text-center md:text-left space-y-4">
               <div>
                 <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-1">
@@ -236,7 +236,7 @@ export default function UploadAnalyze() {
                 </div>
               )}
               
-              <div className="bg-surface-variant border-l-4 border-primary p-4 text-on-surface text-sm italic rounded-r-lg inline-block text-left shadow-inner">
+              <div className="apple-glass-dark border border-white/5 border-l-4 border-l-primary p-4 text-on-surface text-sm italic rounded-r-2xl inline-block text-left shadow-inner">
                 &ldquo;{result.sentence}&rdquo;
               </div>
             </div>
@@ -244,14 +244,14 @@ export default function UploadAnalyze() {
             <div className="shrink-0 flex flex-col items-center gap-3">
               <button
                 onClick={handleSpeak}
-                className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-primary/20 cursor-pointer animate-pulse"
+                className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg cursor-pointer border-0"
                 aria-label="Speak result"
               >
                 <Volume2 strokeWidth={2} size={26} fill="currentColor" />
               </button>
               <button
                 onClick={handleClear}
-                className="px-5 py-1.5 border border-outline-variant hover:border-outline text-on-surface rounded-lg hover:bg-surface-variant transition-colors flex items-center gap-1.5 text-xs font-bold cursor-pointer"
+                className="px-5 py-2.5 border border-white/10 hover:border-white/20 text-on-surface rounded-xl hover:bg-white/5 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 bg-transparent"
               >
                 <RefreshCw size={12} /> Upload New
               </button>
