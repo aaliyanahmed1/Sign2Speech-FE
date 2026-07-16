@@ -59,12 +59,34 @@ export default function Landing() {
             A privacy-first local engine converting webcam sign gestures into grammatically polished speech instantly.
           </motion.p>
 
+          {/* Quick Specs / Telemetry Badges */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="flex flex-wrap items-center justify-center gap-3 mb-10 max-w-3xl mx-auto"
+          >
+            {[
+              { label: 'Latency', val: '< 18ms', icon: 'speed' },
+              { label: 'Inference', val: 'YOLO12 Edge', icon: 'neurology' },
+              { label: 'Vocabulary', val: '23 Actions', icon: 'gesture' },
+              { label: 'Data Privacy', val: '100% Local', icon: 'lock' },
+              { label: 'Audio Synthesis', val: 'Neural TTS', icon: 'keyboard_voice' }
+            ].map((s) => (
+              <div key={s.label} className="apple-glass px-4 py-2 rounded-full flex items-center gap-2 border border-white/5 shadow-sm text-[10px] font-semibold font-mono text-on-surface-variant">
+                <span className="material-symbols-outlined text-primary text-sm">{s.icon}</span>
+                <span className="uppercase tracking-wider">{s.label}:</span>
+                <span className="text-on-surface font-sans font-bold">{s.val}</span>
+              </div>
+            ))}
+          </motion.div>
+
           {/* CTAs */}
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24 max-w-md mx-auto sm:max-w-none"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 max-w-md mx-auto sm:max-w-none"
           >
             <Link
               to="/live"
@@ -79,6 +101,27 @@ export default function Landing() {
             >
               Read Architecture
             </Link>
+          </motion.div>
+
+          {/* Quick Metrics Counters Grid */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16 border border-white/5 py-8 text-center bg-black/40 rounded-3xl px-6 backdrop-blur-sm shadow-inner"
+          >
+            {[
+              { value: '23+', label: 'Active Gesture Signs', desc: 'Real-time vocab classes supported' },
+              { value: '18ms', label: 'Local Neural Latency', desc: 'Instant frame-by-frame inference' },
+              { value: '100%', label: 'On-Device Execution', desc: 'Zero cloud dependencies, edge secure' },
+              { value: 'Dual', label: 'Translation Modes', desc: 'Two-way audio & visual interpreter' }
+            ].map((c) => (
+              <div key={c.label} className="space-y-1.5 text-center">
+                <p className="font-syne text-3xl font-extrabold text-primary">{c.value}</p>
+                <p className="text-[11px] font-bold text-on-surface tracking-wider uppercase">{c.label}</p>
+                <p className="text-[9px] text-on-surface-variant opacity-75 leading-relaxed">{c.desc}</p>
+              </div>
+            ))}
           </motion.div>
 
           {/* Main Interface Preview Simulator */}
