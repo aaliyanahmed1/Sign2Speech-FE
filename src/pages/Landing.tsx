@@ -48,8 +48,8 @@ export default function Landing() {
             transition={{ delay: 0.1 }}
             className="font-display-lg text-4xl md:text-6xl lg:text-7xl mb-4 max-w-4xl mx-auto text-on-surface tracking-tight font-extrabold leading-tight"
           >
-            Speak Your Signs.<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Hear Your Voice Instantly.</span>
+            Bridging the Silence.<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">Helping the Deaf Communicate.</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -59,7 +59,7 @@ export default function Landing() {
             transition={{ delay: 0.2 }}
             className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-6 opacity-75 leading-relaxed text-sm md:text-base"
           >
-            Bridging the gap between sign language and spoken conversation. Translate webcam gestures into polished, natural speech in under 18ms—100% locally and privately in your browser with zero setup.
+            A free, open-source contribution to human accessibility. Sign2Speech runs entirely on-device to translate sign gestures into fluid spoken words, helping Deaf and Hard of Hearing individuals connect with the world instantly and privately.
           </motion.p>
 
           {/* Active Status Callout Banner */}
@@ -73,7 +73,7 @@ export default function Landing() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-[10px] font-bold tracking-wider text-emerald-400 uppercase font-mono">Web Engine Status: Active & Ready</span>
+            <span className="text-[10px] font-bold tracking-wider text-emerald-400 uppercase font-mono">Open Accessibility Project &mdash; Free & Local</span>
           </motion.div>
 
           {/* Quick Specs / Telemetry Badges */}
@@ -110,7 +110,7 @@ export default function Landing() {
                 to="/live"
                 className="w-full sm:w-auto bg-gradient-to-r from-primary via-secondary to-primary text-on-primary-fixed font-bold px-12 py-4.5 rounded-full shadow-[0_0_30px_rgba(184,200,223,0.25)] flex items-center justify-center gap-3 transition-all hover:scale-[1.03] active:scale-[0.97] no-underline cursor-pointer border-0"
               >
-                Start Translating Free
+                Launch Free Interpreter
                 <span className="material-symbols-outlined text-xl">arrow_forward</span>
               </Link>
               <Link
@@ -125,15 +125,15 @@ export default function Landing() {
             <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] font-mono text-on-surface-variant opacity-80 mt-3">
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
-                No Sign-Up Required
+                Free & Open-Source
               </span>
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
-                100% On-Device Privacy
+                100% Local Privacy
               </span>
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
-                Zero Cloud Latency
+                No Account Required
               </span>
             </div>
           </motion.div>
