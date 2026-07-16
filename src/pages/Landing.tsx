@@ -62,6 +62,20 @@ export default function Landing() {
             Bridging the gap between sign language and spoken conversation. Translate webcam gestures into polished, natural speech in under 18ms—100% locally and privately in your browser with zero setup.
           </motion.p>
 
+          {/* Active Status Callout Banner */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.22 }}
+            className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 mb-8 max-w-md mx-auto shadow-sm"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-[10px] font-bold tracking-wider text-emerald-400 uppercase font-mono">Web Engine Status: Active & Ready</span>
+          </motion.div>
+
           {/* Quick Specs / Telemetry Badges */}
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
@@ -70,14 +84,14 @@ export default function Landing() {
             className="flex flex-wrap items-center justify-center gap-3 mb-6 max-w-3xl mx-auto"
           >
             {[
-              { label: 'Latency', val: '< 18ms', icon: 'speed' },
-              { label: 'Inference', val: 'Local Neural', icon: 'neurology' },
-              { label: 'Vocabulary', val: '23 Actions', icon: 'gesture' },
-              { label: 'Data Privacy', val: '100% Local', icon: 'lock' },
-              { label: 'Audio Synthesis', val: 'Neural TTS', icon: 'keyboard_voice' }
+              { label: 'Latency', val: '< 18ms', icon: 'speed', color: 'text-emerald-400' },
+              { label: 'Inference', val: 'Local Neural', icon: 'neurology', color: 'text-cyan-400' },
+              { label: 'Vocabulary', val: '23 Actions', icon: 'gesture', color: 'text-amber-400' },
+              { label: 'Data Privacy', val: '100% Local', icon: 'lock', color: 'text-blue-400' },
+              { label: 'Audio Synthesis', val: 'Neural TTS', icon: 'keyboard_voice', color: 'text-purple-400' }
             ].map((s) => (
               <div key={s.label} className="apple-glass px-4 py-2 rounded-full flex items-center gap-2 border border-white/5 shadow-sm text-[10px] font-semibold font-mono text-on-surface-variant">
-                <span className="material-symbols-outlined text-primary text-sm">{s.icon}</span>
+                <span className={`material-symbols-outlined text-sm ${s.color}`}>{s.icon}</span>
                 <span className="uppercase tracking-wider">{s.label}:</span>
                 <span className="text-on-surface font-sans font-bold">{s.val}</span>
               </div>
@@ -89,21 +103,39 @@ export default function Landing() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 max-w-md mx-auto sm:max-w-none"
+            className="mb-10"
           >
-            <Link
-              to="/live"
-              className="w-full sm:w-auto bg-primary text-on-primary-fixed font-bold px-12 py-4.5 rounded-full shadow-[0_20px_50px_rgba(184,200,223,0.15)] flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-[0.97] no-underline cursor-pointer"
-            >
-              Open Application
-              <span className="material-symbols-outlined text-xl">arrow_forward</span>
-            </Link>
-            <Link
-              to="/about"
-              className="w-full sm:w-auto apple-glass-dark text-on-surface border border-white/10 hover:border-white/20 font-bold px-12 py-4.5 rounded-full transition-all hover:bg-white/10 active:scale-[0.97] no-underline cursor-pointer flex items-center justify-center"
-            >
-              Read Architecture
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto sm:max-w-none mb-4">
+              <Link
+                to="/live"
+                className="w-full sm:w-auto bg-gradient-to-r from-primary via-secondary to-primary text-on-primary-fixed font-bold px-12 py-4.5 rounded-full shadow-[0_0_30px_rgba(184,200,223,0.25)] flex items-center justify-center gap-3 transition-all hover:scale-[1.03] active:scale-[0.97] no-underline cursor-pointer border-0"
+              >
+                Start Translating Free
+                <span className="material-symbols-outlined text-xl">arrow_forward</span>
+              </Link>
+              <Link
+                to="/about"
+                className="w-full sm:w-auto apple-glass-dark text-on-surface border border-white/10 hover:border-white/20 font-bold px-12 py-4.5 rounded-full transition-all hover:bg-white/10 active:scale-[0.97] no-underline cursor-pointer flex items-center justify-center"
+              >
+                Read Architecture
+              </Link>
+            </div>
+            
+            {/* Conversion Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] font-mono text-on-surface-variant opacity-80 mt-3">
+              <span className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
+                No Sign-Up Required
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
+                100% On-Device Privacy
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-[12px] text-emerald-400 font-bold">check_circle</span> 
+                Zero Cloud Latency
+              </span>
+            </div>
           </motion.div>
 
           {/* Quick Metrics Counters Grid */}
@@ -135,12 +167,25 @@ export default function Landing() {
             className="relative max-w-4xl mx-auto mb-32 px-4 md:px-0"
           >
             <div className="rounded-[2.5rem] p-3 apple-glass transition-transform duration-700 hover:scale-[1.01]">
-              <div className="relative rounded-[2rem] overflow-hidden aspect-video bg-surface-container-lowest border border-white/5 flex items-center justify-center bg-black">
+              <Link 
+                to="/live" 
+                className="relative rounded-[2rem] overflow-hidden aspect-video bg-surface-container-lowest border border-white/5 flex items-center justify-center bg-black group/preview block w-full h-full cursor-pointer"
+              >
                 <img 
                   alt="User signing mockup" 
-                  className="w-full h-full object-cover opacity-60" 
+                  className="w-full h-full object-cover opacity-50 transition-opacity duration-300 group-hover/preview:opacity-40" 
                   src="/male_signing.jpg"
                 />
+                
+                {/* Large Pulsing Central Play Button */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-r from-primary/80 to-secondary/80 text-on-primary-fixed flex items-center justify-center shadow-[0_0_40px_rgba(184,200,223,0.3)] group-hover/preview:scale-110 group-hover/preview:shadow-[0_0_55px_rgba(184,200,223,0.4)] transition-all duration-300">
+                    <span className="material-symbols-outlined text-4xl font-extrabold ml-1">play_arrow</span>
+                  </div>
+                  <div className="apple-glass px-6 py-2.5 rounded-full border border-white/10 text-on-surface font-syne font-bold text-xs uppercase tracking-widest group-hover/preview:border-primary/30 transition-all">
+                    Launch Live Stream Interpreter
+                  </div>
+                </div>
                 
                 {/* Simulated Hand Tracking Overlays */}
                 <div className="absolute inset-0 pointer-events-none">
@@ -176,7 +221,7 @@ export default function Landing() {
                     <span className="font-bold text-[10px] uppercase tracking-widest font-mono">Active Streaming</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             {/* Floating Semantic Cards */}
