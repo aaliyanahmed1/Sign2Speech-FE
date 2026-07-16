@@ -180,7 +180,7 @@ export default function SignSpeakHistory() {
               Pinned Phrases
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {pinnedEntries.map((entry) => (
               <div 
                 key={entry.id}
@@ -217,7 +217,7 @@ export default function SignSpeakHistory() {
           )}
         </div>
 
-        <div className="space-y-4 flex-grow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
           {recentEntries.map((entry) => (
             <div 
               key={entry.id}
@@ -260,7 +260,7 @@ export default function SignSpeakHistory() {
           )}
 
           {/* Atmospheric Banner */}
-          <div className="relative w-full h-48 rounded-xl overflow-hidden mt-8 border border-white/10 group shrink-0">
+          <div className="relative w-full h-48 rounded-xl overflow-hidden mt-8 border border-white/10 group shrink-0 col-span-1 md:col-span-2">
             <div 
               className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
               style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpSuXD36xN4dPtU0ATHGoWCSDdN2OT_6Bn00K41QuWmkpAzo_OMXcwXRsCp68DGpEEsh81nlz_jFxbiLSTTQjXKM5Hf8wKLlUIdEIi5E04rlL7gQ2hMhOVKXZdWHH6FRGWyR3tE21MwtP2UEig4nHLChgrjYDT90lFzGp1pzka6MF3YU8VddYGRHzBOo_sCJASM97qqDK5s0qgtcXBnl5f5mz9EmJ4HYGDi9hl_o6QCjFg0KnmiH4HZQ')" }}

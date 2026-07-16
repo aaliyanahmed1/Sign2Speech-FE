@@ -64,7 +64,10 @@ export default function SignSpeakSettings() {
   };
 
   return (
-    <div className="flex-grow flex flex-col px-6 pt-4 safe-pb space-y-12 select-none overflow-y-auto font-sans bg-background text-on-background">
+    <div className="flex-grow flex flex-col px-6 pt-4 safe-pb select-none overflow-y-auto font-sans bg-background text-on-background max-w-5xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        {/* Left Column */}
+        <div className="space-y-12">
       {/* Hand Calibration Section */}
       <section className="space-y-6 shrink-0 text-left">
         <div className="flex items-center gap-3 text-on-surface">
@@ -180,6 +183,10 @@ export default function SignSpeakSettings() {
           </div>
         </div>
       </section>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-12">
 
       {/* Mobile & Hardware Optimization Section */}
       <section className="space-y-6 shrink-0 text-left">
@@ -411,6 +418,8 @@ export default function SignSpeakSettings() {
           RESET ALL SYSTEM DATA
         </button>
       </section>
+        </div>
+      </div>
     </div>
   );
 }
