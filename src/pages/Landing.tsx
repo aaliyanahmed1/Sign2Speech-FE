@@ -30,7 +30,7 @@ export default function Landing() {
       <main className="pt-16 pb-20 min-h-screen relative z-10">
         {/* Hero Section */}
         {/* Hero Section */}
-        <section className="relative px-margin-mobile pt-8 md:pt-12 max-w-5xl mx-auto overflow-hidden z-10">
+        <section className="relative px-margin-mobile pt-8 md:pt-12 max-w-7xl mx-auto overflow-hidden z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
             
             {/* Left Column: Text Content & Actions */}
@@ -66,11 +66,53 @@ export default function Landing() {
                 A free, open-source contribution to human accessibility. Sign2Speech translates Pakistan Sign Language (PSL) gestures into fluid spoken Urdu and English—100% locally and privately in your browser with zero cloud latency.
               </motion.p>
 
+              {/* Quick Metrics Counters Grid (Compact 2x2 inside left column) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="grid grid-cols-2 gap-4 border border-white/5 py-4 px-4 bg-black/45 rounded-2xl backdrop-blur-sm shadow-inner max-w-xl"
+              >
+                {[
+                  { value: '23+', label: 'Active PSL Signs', desc: 'Real-time vocab classes supported' },
+                  { value: '18ms', label: 'Local Neural Latency', desc: 'Instant frame-by-frame inference' },
+                  { value: '100%', label: 'On-Device Execution', desc: 'Zero cloud dependencies, edge secure' },
+                  { value: 'Dual', label: 'Translation Modes', desc: 'Two-way audio & visual interpreter' }
+                ].map((c) => (
+                  <div key={c.label} className="space-y-0.5 text-left border-l-2 border-primary/20 pl-3">
+                    <p className="font-syne text-xl font-extrabold text-primary leading-none">{c.value}</p>
+                    <p className="text-[9px] font-bold text-on-surface tracking-wider uppercase leading-tight">{c.label}</p>
+                    <p className="text-[8px] text-on-surface-variant opacity-75 leading-tight">{c.desc}</p>
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* Quick Specs / Telemetry Badges (inside left column) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.28 }}
+                className="flex flex-wrap items-center gap-2 max-w-xl"
+              >
+                {[
+                  { label: 'Latency', val: '< 18ms', icon: 'speed', color: 'text-emerald-400' },
+                  { label: 'Inference', val: 'Local Neural', icon: 'neurology', color: 'text-cyan-400' },
+                  { label: 'Vocabulary', val: '23 PSL signs', icon: 'gesture', color: 'text-amber-400' },
+                  { label: 'Data Privacy', val: '100% Local', icon: 'lock', color: 'text-blue-400' }
+                ].map((s) => (
+                  <div key={s.label} className="apple-glass px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/5 shadow-sm text-[9px] font-semibold font-mono text-on-surface-variant">
+                    <span className={`material-symbols-outlined text-xs ${s.color}`}>{s.icon}</span>
+                    <span className="uppercase tracking-wider">{s.label}:</span>
+                    <span className="text-on-surface font-sans font-bold">{s.val}</span>
+                  </div>
+                ))}
+              </motion.div>
+
               {/* Active Status Callout Banner */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.22 }}
+                transition={{ delay: 0.3 }}
                 className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 shadow-sm"
               >
                 <span className="relative flex h-1.5 w-1.5">
@@ -84,7 +126,7 @@ export default function Landing() {
               <motion.div 
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.32 }}
                 className="pt-2 space-y-4"
               >
                 <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -198,56 +240,9 @@ export default function Landing() {
             </motion.div>
 
           </div>
-
-          {/* Under-fold: Telemetry and Counters Grid layout cleanly aligned below */}
-          <div className="mt-16 space-y-8">
-            {/* Quick Specs / Telemetry Badges */}
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
-              className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto"
-            >
-              {[
-                { label: 'Latency', val: '< 18ms', icon: 'speed', color: 'text-emerald-400' },
-                { label: 'Inference', val: 'Local Neural', icon: 'neurology', color: 'text-cyan-400' },
-                { label: 'Vocabulary', val: '23 PSL signs', icon: 'gesture', color: 'text-amber-400' },
-                { label: 'Data Privacy', val: '100% Local', icon: 'lock', color: 'text-blue-400' },
-                { label: 'Audio Synthesis', val: 'Urdu & English TTS', icon: 'keyboard_voice', color: 'text-purple-400' }
-              ].map((s) => (
-                <div key={s.label} className="apple-glass px-4 py-2 rounded-full flex items-center gap-2 border border-white/5 shadow-sm text-[10px] font-semibold font-mono text-on-surface-variant">
-                  <span className={`material-symbols-outlined text-sm ${s.color}`}>{s.icon}</span>
-                  <span className="uppercase tracking-wider">{s.label}:</span>
-                  <span className="text-on-surface font-sans font-bold">{s.val}</span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Quick Metrics Counters Grid */}
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16 border border-white/5 py-6 text-center bg-black/40 rounded-3xl px-6 backdrop-blur-sm shadow-inner"
-            >
-              {[
-                { value: '23+', label: 'Active PSL Signs', desc: 'Real-time vocab classes supported' },
-                { value: '18ms', label: 'Local Neural Latency', desc: 'Instant frame-by-frame inference' },
-                { value: '100%', label: 'On-Device Execution', desc: 'Zero cloud dependencies, edge secure' },
-                { value: 'Dual', label: 'Translation Modes', desc: 'Two-way audio & visual interpreter' }
-              ].map((c) => (
-                <div key={c.label} className="space-y-1.5 text-center">
-                  <p className="font-syne text-3xl font-extrabold text-primary">{c.value}</p>
-                  <p className="text-[11px] font-bold text-on-surface tracking-wider uppercase">{c.label}</p>
-                  <p className="text-[9px] text-on-surface-variant opacity-75 leading-relaxed">{c.desc}</p>
-                </div>
-              ))}
-            </motion.div>
-          </div>
         </section>
-
         {/* Features Grid */}
-        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10">
+        <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Spatial Logic */}
@@ -282,7 +277,7 @@ export default function Landing() {
         </section>
 
         {/* Real-World Impact Statistics Section */}
-        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20">
+        <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20">
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-left">
             <div className="max-w-xl">
               <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">The Accessibility Gap</span>
@@ -331,7 +326,7 @@ export default function Landing() {
         </section>
 
         {/* Supported Gesture Vocabulary Showcase */}
-        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
+        <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
           <div className="max-w-xl mb-12">
             <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Lexicon Database</span>
             <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Supported Sign Vocabulary</h2>
@@ -393,7 +388,7 @@ export default function Landing() {
         </section>
 
         {/* Unified pipeline description */}
-        <section className="py-20 px-6 max-w-5xl mx-auto text-center relative z-10 border-t border-white/5">
+        <section className="py-20 px-6 max-w-7xl mx-auto text-center relative z-10 border-t border-white/5">
           <h2 className="text-3xl font-syne font-bold mb-4">Unified Translation Pipeline</h2>
           <p className="text-on-surface-variant max-w-xl mx-auto text-xs leading-relaxed mb-12 opacity-85">
             Sign2Speech aggregates camera feed capturing, contextual sentence refining, and voice synthesis into a single local loop.
@@ -413,7 +408,7 @@ export default function Landing() {
           </div>
         </section>
         {/* Interactive Inference Sandbox */}
-        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
+        <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
           <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
             <div className="max-w-xl">
               <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Simulated Sandbox</span>
@@ -507,7 +502,7 @@ export default function Landing() {
         </section>
 
         {/* Interactive FAQ Section */}
-        <section className="px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto mb-28 relative z-10 border-t border-white/5 pt-20 text-left">
+        <section className="px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto mb-28 relative z-10 border-t border-white/5 pt-20 text-left">
           <div className="text-center max-w-xl mx-auto mb-12">
             <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Frequently Asked</span>
             <h2 className="text-3xl font-syne font-bold leading-tight">Got Questions?</h2>
@@ -554,7 +549,7 @@ export default function Landing() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-8 px-6 text-on-surface-variant/70 text-[11px] font-mono relative z-10 flex flex-col sm:flex-row items-center justify-between max-w-5xl mx-auto gap-4">
+      <footer className="border-t border-white/5 py-8 px-6 text-on-surface-variant/70 text-[11px] font-mono relative z-10 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-4">
         <span>Sign2Speech v1.0.0 &mdash; Real-time AI Sign Language Translation</span>
         <div className="flex gap-6">
           <Link to="/developer" className="hover:text-primary transition-colors hover:underline no-underline">Developer Console</Link>
