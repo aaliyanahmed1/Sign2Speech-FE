@@ -183,6 +183,49 @@ export default function Landing() {
           </div>
         </section>
 
+        {/* Real-World Impact Statistics Section */}
+        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 text-left">
+            <div className="max-w-xl">
+              <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">The Accessibility Gap</span>
+              <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Why Assistive AI Translation Matters</h2>
+            </div>
+            <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed max-w-md">
+              Communication barriers for Deaf and Hard of Hearing (DHH) individuals restrict autonomy in critical daily settings. Sign2Speech bridges this divide locally and privately.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            {[
+              { 
+                stat: '62%', 
+                label: 'Healthcare Barriers', 
+                desc: 'Over 62% of Deaf individuals encounter severe communication gaps in medical settings, resulting in treatment delays or misunderstandings.' 
+              },
+              { 
+                stat: '66%', 
+                label: 'Employment Impact', 
+                desc: '66% of DHH professionals report that structural communication barriers heavily impact career decisions and professional growth opportunities.' 
+              },
+              { 
+                stat: '24%', 
+                label: 'Emergency Concerns', 
+                desc: 'Nearly 24% of DHH respondents express concern that they would be unable to communicate effectively in sudden emergency situations.' 
+              }
+            ].map((item, idx) => (
+              <div key={idx} className="apple-glass p-8 rounded-[2rem] border border-white/5 flex flex-col justify-between group hover:border-primary/20 transition-all duration-300">
+                <div className="font-syne text-5xl font-extrabold text-primary mb-6 group-hover:scale-105 transition-transform duration-300">
+                  {item.stat}
+                </div>
+                <div>
+                  <h4 className="font-syne font-bold text-sm text-on-surface mb-2">{item.label}</h4>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed opacity-85">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Unified pipeline description */}
         <section className="py-20 px-6 max-w-5xl mx-auto text-center relative z-10 border-t border-white/5">
           <h2 className="text-3xl font-syne font-bold mb-4">Unified Translation Pipeline</h2>
