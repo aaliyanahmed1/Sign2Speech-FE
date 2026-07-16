@@ -68,7 +68,7 @@ export default function Landing() {
           >
             {[
               { label: 'Latency', val: '< 18ms', icon: 'speed' },
-              { label: 'Inference', val: 'YOLO12 Edge', icon: 'neurology' },
+              { label: 'Inference', val: 'Local Neural', icon: 'neurology' },
               { label: 'Vocabulary', val: '23 Actions', icon: 'gesture' },
               { label: 'Data Privacy', val: '100% Local', icon: 'lock' },
               { label: 'Audio Synthesis', val: 'Neural TTS', icon: 'keyboard_voice' }
@@ -246,26 +246,94 @@ export default function Landing() {
               { 
                 stat: '62%', 
                 label: 'Healthcare Barriers', 
-                desc: 'Over 62% of Deaf individuals encounter severe communication gaps in medical settings, resulting in treatment delays or misunderstandings.' 
+                desc: 'Over 62% of Deaf individuals encounter severe communication gaps in medical settings, resulting in treatment delays or misunderstandings.',
+                glow: 'border-red-500/10 hover:border-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]',
+                color: 'text-red-400'
               },
               { 
                 stat: '66%', 
                 label: 'Employment Impact', 
-                desc: '66% of DHH professionals report that structural communication barriers heavily impact career decisions and professional growth opportunities.' 
+                desc: '66% of DHH professionals report that structural communication barriers heavily impact career decisions and professional growth opportunities.',
+                glow: 'border-amber-500/10 hover:border-amber-500/30 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]',
+                color: 'text-amber-400'
               },
               { 
                 stat: '24%', 
                 label: 'Emergency Concerns', 
-                desc: 'Nearly 24% of DHH respondents express concern that they would be unable to communicate effectively in sudden emergency situations.' 
+                desc: 'Nearly 24% of DHH respondents express concern that they would be unable to communicate effectively in sudden emergency situations.',
+                glow: 'border-purple-500/10 hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]',
+                color: 'text-purple-400'
               }
             ].map((item, idx) => (
-              <div key={idx} className="apple-glass p-8 rounded-[2rem] border border-white/5 flex flex-col justify-between group hover:border-primary/20 transition-all duration-300">
-                <div className="font-syne text-5xl font-extrabold text-primary mb-6 group-hover:scale-105 transition-transform duration-300">
+              <div key={idx} className={`apple-glass p-8 rounded-[2rem] border flex flex-col justify-between group transition-all duration-300 ${item.glow}`}>
+                <div className={`font-syne text-5xl font-extrabold mb-6 group-hover:scale-105 transition-transform duration-300 ${item.color}`}>
                   {item.stat}
                 </div>
                 <div>
                   <h4 className="font-syne font-bold text-sm text-on-surface mb-2">{item.label}</h4>
                   <p className="text-[11px] text-on-surface-variant leading-relaxed opacity-85">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Supported Gesture Vocabulary Showcase */}
+        <section className="px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto mb-20 relative z-10 border-t border-white/5 pt-20 text-left">
+          <div className="max-w-xl mb-12">
+            <span className="text-primary font-mono text-xs uppercase tracking-widest block mb-2">Lexicon Database</span>
+            <h2 className="text-3xl md:text-4xl font-syne font-bold leading-tight">Supported Sign Vocabulary</h2>
+            <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed mt-2">
+              Sign2Speech supports 23 active gesture vocabulary classifications locally on-device.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { 
+                category: 'Basic Conversation', 
+                color: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/20 text-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.1)]',
+                items: ['school', 'sorry', 'help', 'easy', 'work', 'age', 'effort', 'respect'] 
+              },
+              { 
+                category: 'Locations & Directions', 
+                color: 'from-cyan-500/20 to-cyan-500/5 border-cyan-500/20 text-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)]',
+                items: ['near', 'home', 'village', 'washroom'] 
+              },
+              { 
+                category: 'Social Interactions', 
+                color: 'from-amber-500/20 to-amber-500/5 border-amber-500/20 text-amber-400 hover:shadow-[0_0_15px_rgba(245,158,11,0.1)]',
+                items: ['friend', 'teacher', 'message', 'good'] 
+              },
+              { 
+                category: 'Actions & Verbs', 
+                color: 'from-orange-500/20 to-orange-500/5 border-orange-500/20 text-orange-400 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)]',
+                items: ['eating', 'drinking', 'pass', 'fail'] 
+              },
+              { 
+                category: 'System Triggers', 
+                color: 'from-purple-500/20 to-purple-500/5 border-purple-500/20 text-purple-400 hover:shadow-[0_0_15px_rgba(139,92,246,0.1)]',
+                items: ['preset', 'dress'] 
+              }
+            ].map((group) => (
+              <div key={group.category} className="apple-glass rounded-[2rem] p-6 space-y-4 border border-white/5 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-syne font-bold text-xs uppercase tracking-wider text-on-surface border-b border-white/5 pb-3 flex items-center justify-between">
+                    <span>{group.category}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-on-surface-variant font-normal">
+                      {group.items.length} signs
+                    </span>
+                  </h3>
+                  <div className="flex flex-wrap gap-2 pt-4">
+                    {group.items.map((g) => (
+                      <span 
+                        key={g} 
+                        className={`px-3 py-1 bg-gradient-to-br ${group.color} border rounded-xl text-xs font-mono font-semibold transition-all hover:scale-105 active:scale-95 duration-200 cursor-pointer`}
+                      >
+                        {g}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
