@@ -240,14 +240,12 @@ function SignSpeakLayout() {
       
       {/* Page Content */}
       <div className="flex-grow pt-24 px-margin-mobile">
-        <div className="max-w-5xl mx-auto w-full">
           <Routes>
-            <Route path="/" element={<SignSpeakTranslate />} />
-            <Route path="/result" element={<SignSpeakResult />} />
-            <Route path="/history" element={<SignSpeakHistory />} />
-            <Route path="/settings" element={<SignSpeakSettings />} />
+            <Route index element={<SignSpeakTranslate />} />
+            <Route path="result" element={<SignSpeakResult />} />
+            <Route path="history" element={<SignSpeakHistory />} />
+            <Route path="settings" element={<SignSpeakSettings />} />
           </Routes>
-        </div>
       </div>
 
       {/* Floating Bottom Nav */}
