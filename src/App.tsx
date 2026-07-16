@@ -76,7 +76,7 @@ function NavBar() {
             ) : (
               <Link
                 to="/login"
-                className="px-4 py-2 ml-4 bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/10"
+                className="px-5 py-2 ml-4 border border-white/10 hover:border-white/20 text-on-surface font-bold text-xs rounded-full hover:bg-white/5 active:scale-95 transition-all bg-transparent no-underline"
               >
                 Sign In
               </Link>
@@ -140,7 +140,7 @@ function NavBar() {
                   <Link
                     to="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block w-full py-2.5 text-center bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/10"
+                    className="block w-full py-2.5 text-center border border-white/10 hover:border-white/20 text-on-surface font-bold text-xs rounded-full hover:bg-white/5 active:scale-95 transition-all bg-transparent no-underline animate-fade-in"
                   >
                     Sign In
                   </Link>
