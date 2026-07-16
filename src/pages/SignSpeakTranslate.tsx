@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAppStore } from '../store';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { useToast } from '../components/Toast';
@@ -139,6 +139,9 @@ export default function SignSpeakTranslate() {
     voiceId,
     facingMode, setFacingMode,
     bandwidthMode,
+    currentGesture,
+    clearSession,
+    isStreaming,
   } = useAppStore();
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -328,6 +331,12 @@ export default function SignSpeakTranslate() {
     }
   }, [translateMode, loadNextArenaWord]);
 
+  const handleClearStream = () => {
+    if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(15);
+    clearSession();
+    addToast('Translation stream cleared.', 'info');
+  };
+
   const handleToggleCamera = () => {
     if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(15);
     if (cameraOn) {
@@ -492,10 +501,10 @@ export default function SignSpeakTranslate() {
     }
   };
 
-  return (
-    <div className="flex-grow flex flex-col bg-background select-none font-sans">
+    return (
+    <div className="flex-grow flex flex-col bg-[#050505] select-none font-sans max-w-5xl mx-auto w-full gap-8">
       {/* Segment Mode Selector */}
-      <div className="flex border-b border-outline-variant glass-header p-2 gap-1 justify-between shrink-0">
+      <div className="flex border border-white/5 p-1.5 gap-1.5 justify-between shrink-0 apple-glass rounded-[1.75rem]">
         {[
           { id: 'sign2speech', label: 'Sign to Voice', icon: 'interpreter_mode' },
           { id: 'speech2sign', label: 'Voice to Sign', icon: 'sign_language' },
@@ -507,13 +516,13 @@ export default function SignSpeakTranslate() {
               if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(10);
               setTranslateMode(m.id as any);
             }}
-            className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-1.5 font-bold text-[10px] tracking-wider uppercase active:scale-95 transition-all cursor-pointer ${
+            className={`flex-1 py-3 rounded-2xl flex items-center justify-center gap-2 font-bold text-xs tracking-wider uppercase active:scale-95 transition-all cursor-pointer border-0 ${
               translateMode === m.id
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-on-surface-variant hover:bg-surface-variant/50'
+                ? 'bg-white text-black shadow-lg'
+                : 'text-on-surface-variant/70 hover:text-on-surface hover:bg-white/5'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px]">{m.icon}</span>
+            <span className="material-symbols-outlined text-[18px]">{m.icon}</span>
             {m.label}
           </button>
         ))}
@@ -522,109 +531,260 @@ export default function SignSpeakTranslate() {
       {translateMode === 'sign2speech' ? (
         // Mode A: Sign-to-Speech (Deaf to Speaking)
         <>
-          <section 
-            className="relative w-full h-[45vh] min-h-[380px] bg-surface-container-lowest overflow-hidden cursor-pointer shadow-inner"
-            onClick={handleToggleCamera}
-            title={cameraOn ? "Click to turn camera off" : "Click to turn camera on"}
-          >
-            {cameraOn ? (
-              <>
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  muted
-                  className="absolute inset-0 w-full h-full object-cover opacity-85"
+          {/* Main Video Feed Container */}
+          <section className="relative">
+            <div className="w-full aspect-[4/3] md:aspect-video bg-surface-container-lowest rounded-[2.5rem] overflow-hidden video-container-floating relative group border border-white/5">
+              {/* Webcam stream (always mounted to prevent null refs & ensure autoplay) */}
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                  cameraOn ? 'opacity-85 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+              />
+
+              {/* Offline fallback image preview */}
+              {!cameraOn && (
+                <div 
+                  className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
+                  style={{ backgroundImage: "url('/male_signing.jpg')" }}
                 />
-                {/* Floating Camera Swap FAB */}
+              )}
+
+              {/* Viewfinder Overlays */}
+              <div className="absolute top-6 left-6 viewfinder-corner border-t-2 border-l-2 border-primary/30"></div>
+              <div className="absolute top-6 right-6 viewfinder-corner border-t-2 border-r-2 border-primary/30"></div>
+              <div className="absolute bottom-6 left-6 viewfinder-corner border-b-2 border-l-2 border-primary/30"></div>
+              <div className="absolute bottom-6 right-6 viewfinder-corner border-b-2 border-r-2 border-primary/30"></div>
+
+              {/* HUD Overlays */}
+              <div className="absolute top-6 left-6 z-10" onClick={(e) => { e.stopPropagation(); handleToggleCamera(); }}>
+                <div className="glass-panel-heavy text-white px-4 py-2 rounded-full flex items-center gap-2.5 font-sans text-[11px] font-semibold uppercase tracking-[0.08em] cursor-pointer hover:bg-white/10 active:scale-95 transition-all">
+                  <span className={`w-2 h-2 rounded-full ${cameraOn ? 'bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)]' : 'bg-outline'} live-indicator`}></span>
+                  {cameraOn ? 'Live Stream Active' : 'Stream Paused (Tap to Start)'}
+                </div>
+              </div>
+
+              <div className="absolute bottom-6 right-6 z-10">
+                <div className="glass-panel-heavy text-on-surface/90 px-4 py-2 rounded-full flex items-center gap-2 font-sans text-[11px] font-semibold tracking-wider uppercase font-mono">
+                  <span className="material-symbols-outlined text-[18px] text-primary">videocam</span>
+                  {facingMode === 'user' ? 'Front Lens' : 'Rear Lens'}
+                </div>
+              </div>
+
+              {/* Floating Camera Swap FAB */}
+              {cameraOn && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleSwapCamera();
                   }}
-                  className="absolute top-4 right-4 z-40 w-11 h-11 rounded-full bg-surface/85 backdrop-blur-md border border-outline-variant flex items-center justify-center text-primary active:scale-90 hover:text-secondary shadow-lg transition-all"
+                  className="absolute top-4 right-4 z-40 w-11 h-11 rounded-full bg-surface/85 backdrop-blur-md border border-white/10 flex items-center justify-center text-primary active:scale-90 hover:text-secondary shadow-lg transition-all"
                   title="Switch Camera Source"
                 >
                   <span className="material-symbols-outlined text-[20px]">flip_camera_ios</span>
                 </button>
-              </>
-            ) : (
-              <div 
-                className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
-                style={{ 
-                  backgroundImage: "url('/male_signing.jpg')" 
-                }}
-              />
-            )}
-
-            {/* Viewfinder Overlays */}
-            <div className="absolute top-6 left-6 viewfinder-corner border-t-2 border-l-2 border-primary/30"></div>
-            <div className="absolute top-6 right-6 viewfinder-corner border-t-2 border-r-2 border-primary/30"></div>
-            <div className="absolute bottom-6 left-6 viewfinder-corner border-b-2 border-l-2 border-primary/30"></div>
-            <div className="absolute bottom-6 right-6 viewfinder-corner border-b-2 border-r-2 border-primary/30"></div>
-
-            {/* Simulated Hand Tracking Overlays */}
-            {cameraOn && (
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="skeleton-dot animate-ping bg-primary" style={{ top: '48%', left: '45%' }}></div>
-                <div className="skeleton-dot bg-secondary" style={{ top: '42%', left: '52%', animationDelay: '0.2s' }}></div>
-                <div className="skeleton-dot bg-primary" style={{ top: '55%', left: '40%', animationDelay: '0.4s' }}></div>
-                <div className="skeleton-dot bg-tertiary" style={{ top: '38%', left: '48%', animationDelay: '0.6s' }}></div>
-              </div>
-            )}
-
-            {cameraOn && (
-              <div className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-surface/90 backdrop-blur-md px-6 py-2.5 rounded-full border border-outline-variant shadow-md">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="font-mono text-xs uppercase tracking-widest text-on-surface">Gesture Stream Active</span>
-              </div>
-            )}
-
-            {!cameraOn && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 backdrop-blur-[2px]">
-                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 text-white animate-pulse mb-3">
-                  <span className="material-symbols-outlined text-3xl">videocam</span>
-                </div>
-                <p className="font-syne font-bold text-sm text-white tracking-widest uppercase">Tap to start camera feed</p>
-              </div>
-            )}
+              )}
+            </div>
           </section>
 
-          {/* Controls & Translation Card */}
-          <section className="flex-grow flex flex-col p-6 gap-6 bg-background">
-            <div className="flex-grow glass-card rounded-2xl p-6 relative flex flex-col justify-center min-h-[160px] shadow-sm text-left">
-              <span className="absolute top-4 left-4 text-xs font-mono uppercase text-on-surface-variant tracking-wider">Accumulated Translation</span>
-              <p className="text-2xl font-syne font-bold text-on-surface leading-tight transition-opacity duration-300 pt-3">
-                {sentence || "Begin signing to construct sentences..."}
-              </p>
-              <div className="absolute bottom-4 right-4">
+          {/* Bento HUD Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Card 1: Recognition Engine */}
+            <div className="glass-panel-heavy p-6 rounded-[2rem] flex flex-col justify-between group text-left border border-white/5">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <p className="text-on-surface-variant text-[11px] font-bold uppercase tracking-[0.15em] mb-1">Recognition</p>
+                  <h3 className="text-headline-md text-on-surface font-syne font-bold text-lg">{currentGesture ? currentGesture.class : 'Awaiting Sign'}</h3>
+                </div>
+                <div className="p-3 glass-panel rounded-2xl">
+                  <span className="material-symbols-outlined text-primary text-xl">neurology</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div>
+                  <p className="text-on-surface-variant text-[10px] uppercase tracking-widest mb-1 opacity-70">Throughput</p>
+                  <p className="font-sans text-2xl font-bold text-on-surface">
+                    {isStreaming ? (bandwidthMode === 'high' ? '5' : bandwidthMode === 'standard' ? '4' : '3') : '0'}
+                    <span className="text-sm font-medium text-on-surface-variant ml-1">FPS</span>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-on-surface-variant text-[10px] uppercase tracking-widest mb-1 opacity-70">Latency</p>
+                  <p className="font-sans text-2xl font-bold text-on-surface">
+                    {isStreaming ? '18' : '--'}
+                    <span className="text-sm font-medium text-on-surface-variant ml-1">ms</span>
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                  <div 
+                    className="bg-primary h-full rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(212,228,252,0.4)]"
+                    style={{ width: `${currentGesture ? currentGesture.confidence * 100 : 0}%` }}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-[10px] font-mono font-bold">
+                  <span className="text-on-surface-variant tracking-wider">CONFIDENCE</span>
+                  <span className="text-primary font-mono">
+                    {currentGesture ? (currentGesture.confidence * 100).toFixed(1) + '%' : '0.0%'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: NLP Refinement */}
+            <div className="glass-panel-heavy p-6 rounded-[2rem] group text-left border border-white/5 flex flex-col justify-between">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <p className="text-on-surface-variant text-[11px] font-bold uppercase tracking-[0.15em] mb-1">NLP Refinement</p>
+                  <h3 className="text-headline-md text-on-surface font-syne font-bold text-lg">ASL-Refine</h3>
+                </div>
+                <div className="p-3 glass-panel rounded-2xl">
+                  <span className="material-symbols-outlined text-primary text-xl">translate</span>
+                </div>
+              </div>
+              <div className="space-y-3.5">
+                <div className="flex items-center justify-between py-1.5 border-b border-white/5">
+                  <span className="text-[12px] text-on-surface-variant font-medium">Contextual Engine</span>
+                  <span className="text-[12px] font-bold text-on-surface font-mono">{useOllama ? 'Llama 3' : 'ASL-Rules'}</span>
+                </div>
+                <div className="flex items-center justify-between py-1.5 border-b border-white/5">
+                  <span className="text-[12px] text-on-surface-variant font-medium">Refinement Mode</span>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-widest border ${
+                    useOllama 
+                      ? 'bg-[#d4e4fc]/10 text-primary-fixed border-[#d4e4fc]/20' 
+                      : 'bg-primary/10 text-primary border-primary/20'
+                  }`}>
+                    {useOllama ? 'ACTIVE' : 'PASSTHROUGH'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between py-1.5">
+                  <span className="text-[12px] text-on-surface-variant font-medium">TTS Synthesis</span>
+                  <span className="text-[12px] font-bold text-on-surface truncate max-w-[120px] font-mono" title={voiceId}>
+                    {voiceId.split('-')[2] || 'System Default'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Session Overview */}
+            <div className="glass-panel-heavy p-6 rounded-[2rem] group text-left border border-white/5 flex flex-col justify-between">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <p className="text-on-surface-variant text-[11px] font-bold uppercase tracking-[0.15em] mb-1">Session Data</p>
+                  <h3 className="text-headline-md text-on-surface font-syne font-bold text-lg">Live Analytics</h3>
+                </div>
+                <div className="p-3 glass-panel rounded-2xl">
+                  <span className="material-symbols-outlined text-primary text-xl">bar_chart</span>
+                </div>
+              </div>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="font-sans text-4xl font-extrabold text-on-surface tracking-tight">
+                    {gestureHistory.length}
+                  </p>
+                  <p className="text-[10px] font-bold text-on-surface-variant tracking-wider mt-2">SIGNS DETECTED</p>
+                </div>
+                {/* Simulated Telemetry Audio/Data Wave */}
+                <div className="h-16 flex items-end gap-1.5 pb-1">
+                  <div className="w-2.5 h-6 bg-white/10 rounded-full transition-all group-hover:h-8"></div>
+                  <div className="w-2.5 h-10 bg-white/10 rounded-full transition-all group-hover:h-12"></div>
+                  <div className="w-2.5 h-14 bg-white/20 rounded-full transition-all group-hover:h-16"></div>
+                  <div className={`w-2.5 h-12 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(212,228,252,0.4)] ${isStreaming ? 'bg-primary h-14' : 'bg-white/10'}`}></div>
+                  <div className="w-2.5 h-9 bg-white/10 rounded-full transition-all group-hover:h-11"></div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          {/* Premium Translation Stream Area */}
+          <section className="space-y-4">
+            <div className="flex items-center justify-between px-2">
+              <h2 className="text-sm font-bold font-syne text-on-surface tracking-wider uppercase">Live Transcription</h2>
+              <div className="flex gap-2">
                 <button 
-                  onClick={(e) => { e.stopPropagation(); handleSpeak(); }}
+                  onClick={() => handleSpeak()}
                   disabled={!sentence}
-                  aria-label="Listen to translation" 
-                  className="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full hover:opacity-90 active:scale-90 transition-all cursor-pointer shadow-md disabled:opacity-40"
+                  className="p-3 rounded-full text-on-surface-variant bg-white/5 border border-white/5 active:scale-90 hover:text-white cursor-pointer transition-all disabled:opacity-40"
+                  title="Speak Translation"
                 >
-                  <span className="material-symbols-outlined text-xl">volume_up</span>
+                  <span className="material-symbols-outlined text-[20px]">volume_up</span>
+                </button>
+                <button 
+                  onClick={() => {
+                    if (sentence) {
+                      navigator.clipboard.writeText(sentence);
+                      addToast('Translation copied to clipboard', 'success');
+                    }
+                  }}
+                  disabled={!sentence}
+                  className="p-3 rounded-full text-on-surface-variant bg-white/5 border border-white/5 active:scale-90 hover:text-white cursor-pointer transition-all disabled:opacity-40"
+                  title="Copy Transcription"
+                >
+                  <span className="material-symbols-outlined text-[20px]">content_copy</span>
                 </button>
               </div>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <button 
-                onClick={handleSpeakAndSave}
-                disabled={!sentence}
-                className="w-full h-14 bg-primary text-white font-syne font-bold rounded-xl flex items-center justify-center gap-2.5 active:scale-98 transition-transform shadow-md shadow-primary/10 cursor-pointer disabled:opacity-50"
-              >
-                <span className="material-symbols-outlined text-lg">campaign</span>
-                SPEAK & ARCHIVE
-              </button>
+            <div className="glass-panel-heavy rounded-[2.5rem] p-8 md:p-10 border border-white/10 relative overflow-hidden group text-left">
+              {/* Subtle soft inner glow accent */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-primary/40 to-transparent"></div>
+              
+              <div className="min-h-[140px] flex items-center relative z-10">
+                <p className="text-xl md:text-2xl font-semibold text-on-surface leading-normal tracking-tight font-syne">
+                  {sentence ? `"${sentence}"` : "Begin signing to accumulate and compile translation..."}
+                  {isStreaming && (
+                    <span className="inline-block w-1.5 h-7 bg-primary animate-pulse ml-3 rounded-full align-middle shadow-[0_0_12px_rgba(212,228,252,1)]" />
+                  )}
+                </p>
+              </div>
+
+              {/* Transcription Area Pill Buttons */}
+              <div className="mt-8 flex gap-3 overflow-x-auto pb-2 scrollbar-none relative z-10">
+                <button 
+                  onClick={handleClearStream}
+                  disabled={!sentence && gestureHistory.length === 0}
+                  className="glass-panel border border-white/5 text-on-surface/80 px-6 py-2.5 rounded-full text-xs font-bold whitespace-nowrap active:scale-95 transition-all hover:bg-white/10 cursor-pointer disabled:opacity-40"
+                >
+                  Clear Stream
+                </button>
+                <button 
+                  onClick={handleSpeakAndSave}
+                  disabled={!sentence}
+                  className="glass-panel border border-white/5 text-on-surface/80 px-6 py-2.5 rounded-full text-xs font-bold whitespace-nowrap active:scale-95 transition-all hover:bg-white/10 cursor-pointer disabled:opacity-40"
+                >
+                  Speak & Save
+                </button>
+                <Link 
+                  to="/live/settings"
+                  className="glass-panel border border-white/5 text-on-surface/80 px-6 py-2.5 rounded-full text-xs font-bold whitespace-nowrap active:scale-95 transition-all hover:bg-white/10 cursor-pointer no-underline flex items-center"
+                >
+                  Configure Settings
+                </Link>
+              </div>
             </div>
           </section>
+
+          {/* Primary Floating Action Button */}
+          <button 
+            onClick={handleSpeakAndSave}
+            disabled={!sentence}
+            className="fixed bottom-24 right-6 w-14 h-14 bg-white text-black rounded-full shadow-[0_20px_40px_-8px_rgba(255,255,255,0.35)] flex items-center justify-center z-40 active:scale-95 transition-all hover:brightness-110 cursor-pointer disabled:opacity-45 border border-white/10"
+            title="Speak and Save Translation"
+          >
+            <span className="material-symbols-outlined text-[26px] font-bold">campaign</span>
+          </button>
         </>
       ) : translateMode === 'speech2sign' ? (
         // Mode B: Speech-to-Sign (Speaking to Deaf)
         <>
-          <section className="relative w-full h-[40vh] min-h-[340px] bg-background flex flex-col items-center justify-center p-6 border-b border-outline-variant/60 shadow-inner">
+          <section className="relative w-full h-[40vh] min-h-[340px] bg-background flex flex-col items-center justify-center p-6 border border-white/5 rounded-[2rem] overflow-hidden shadow-inner">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
             
             <AnimatePresence mode="wait">
@@ -660,12 +820,12 @@ export default function SignSpeakTranslate() {
                   key="idle"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="flex flex-col items-center text-center w-full max-w-sm px-6 space-y-5"
+                  className="flex flex-col items-center text-center w-full max-w-sm px-6 space-y-6"
                 >
                   <div className="flex flex-col items-center space-y-3">
                     <button 
                       onClick={handleToggleVoiceListening}
-                      className="w-20 h-20 rounded-full bg-primary/10 border-2 border-primary text-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                      className="w-20 h-20 rounded-full bg-primary/10 border-2 border-primary text-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border-0"
                     >
                       <span className="material-symbols-outlined text-4xl">mic</span>
                     </button>
@@ -676,7 +836,7 @@ export default function SignSpeakTranslate() {
                   </div>
                   
                   {/* Or Type Message Option */}
-                  <div className="w-full border-t border-outline-variant/60 pt-4 flex flex-col space-y-2">
+                  <div className="w-full border-t border-white/5 pt-4 flex flex-col space-y-2">
                     <span className="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider text-center">Or write message</span>
                     <div className="flex gap-2 w-full">
                       <input 
@@ -687,11 +847,11 @@ export default function SignSpeakTranslate() {
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') handleTypeTextSubmit();
                         }}
-                        className="flex-grow h-10 px-3.5 rounded-xl border border-outline-variant bg-surface text-on-surface text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-inner"
+                        className="flex-grow h-10 px-3.5 rounded-xl border border-white/10 bg-surface-container-low text-on-surface text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-inner"
                       />
                       <button 
                         onClick={handleTypeTextSubmit}
-                        className="h-10 px-4 bg-primary hover:opacity-95 text-white text-xs font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-sm"
+                        className="h-10 px-4 bg-primary hover:opacity-95 text-white text-xs font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-sm border-0"
                       >
                         Show Signs
                       </button>
@@ -703,56 +863,56 @@ export default function SignSpeakTranslate() {
           </section>
 
           {/* Transcribed Text & Demonstrative Gesture Cards */}
-          <section className="flex-grow flex flex-col p-6 gap-6 bg-background overflow-hidden">
+          <section className="flex-grow flex flex-col gap-6 text-left">
             {/* Transcribed Text Output */}
-            <div className="glass-card rounded-2xl p-5 relative flex flex-col justify-center min-h-[100px] shadow-sm text-left">
-              <span className="text-xs font-mono uppercase text-on-surface-variant tracking-wider mb-1">Speaker Transcription</span>
+            <div className="glass-panel-heavy rounded-[2rem] p-6 relative flex flex-col justify-center min-h-[100px] border border-white/5">
+              <span className="text-[10px] font-mono uppercase text-on-surface-variant tracking-wider mb-1">Speaker Transcription</span>
               <p className="text-xl font-syne font-bold text-on-surface leading-snug">
                 {recognizedText || 'Waiting for spoken voice input...'}
               </p>
             </div>
 
             {/* Sign Demonstration Board */}
-            <div className="flex-1 flex flex-col overflow-hidden text-left">
+            <div className="flex-1 flex flex-col">
               <span className="text-xs font-mono uppercase text-on-surface-variant tracking-wider mb-3">Demonstrative Sign Gestures</span>
               
-              <div className="flex-grow overflow-x-auto pb-2 flex gap-4 items-start snap-x scrollbar-thin">
-                {matchedSigns.map((signKey) => {
-                  const tutorial = SIGN_TUTORIALS[signKey];
-                  if (!tutorial) return null;
-                  
-                  return (
-                    <motion.div
-                      key={signKey}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="w-[280px] shrink-0 glass-card rounded-2xl p-5 shadow-sm snap-center flex flex-col space-y-4"
-                    >
-                      <div className="flex items-center gap-3 border-b border-outline-variant pb-3">
-                        <span className="text-3xl">{tutorial.illustration}</span>
-                        <div>
-                          <h4 className="font-syne font-bold text-lg text-primary capitalize">{tutorial.title}</h4>
-                          <span className="text-[10px] font-mono text-on-surface-variant uppercase">Vocabulary Sign</span>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2.5 flex-1">
-                        {tutorial.steps.map((step, idx) => (
-                          <div key={idx} className="flex gap-2 text-xs text-on-surface">
-                            <span className="font-mono text-primary font-bold">{idx + 1}.</span>
-                            <p className="leading-normal">{step}</p>
+              <div className="flex-grow overflow-x-auto pb-2 flex gap-4 items-start snap-x scrollbar-none">
+                {matchedSigns.length > 0 ? (
+                  matchedSigns.map((signKey) => {
+                    const tutorial = SIGN_TUTORIALS[signKey];
+                    if (!tutorial) return null;
+                    
+                    return (
+                      <motion.div
+                        key={signKey}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="w-[280px] shrink-0 glass-panel-heavy rounded-2xl p-5 shadow-sm snap-center flex flex-col space-y-4 border border-white/5"
+                      >
+                        <div className="flex items-center gap-3 border-b border-white/5 pb-3">
+                          <span className="text-3xl">{tutorial.illustration}</span>
+                          <div>
+                            <h4 className="font-syne font-bold text-lg text-primary capitalize">{tutorial.title}</h4>
+                            <span className="text-[10px] font-mono text-on-surface-variant uppercase">Vocabulary Sign</span>
                           </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-
-                {matchedSigns.length === 0 && (
-                  <div className="w-full h-full border border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-8 text-center text-on-surface-variant">
+                        </div>
+                        
+                        <div className="space-y-2.5 flex-1">
+                          {tutorial.steps.map((step, idx) => (
+                            <div key={idx} className="flex gap-2 text-xs text-on-surface">
+                              <span className="font-mono text-primary font-bold">{idx + 1}.</span>
+                              <p className="leading-normal">{step}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    );
+                  })
+                ) : (
+                  <div className="w-full h-40 border border-dashed border-white/5 rounded-2xl flex flex-col items-center justify-center p-8 text-center text-on-surface-variant">
                     <span className="material-symbols-outlined text-4xl mb-2 text-outline">gesture</span>
                     <p className="text-sm font-syne font-semibold">No active sign cards</p>
-                    <p className="text-xs max-w-xs mt-1">Speak into the microphone above to map voice into signing cards.</p>
+                    <p className="text-xs max-w-xs mt-1">Speak or write into the selector above to demonstrate signing cards.</p>
                   </div>
                 )}
               </div>
@@ -762,38 +922,23 @@ export default function SignSpeakTranslate() {
       ) : (
         // Mode C: Interactive Sign Practice Arena
         <>
-          <section 
-            className="relative w-full h-[40vh] min-h-[340px] bg-surface-container-lowest overflow-hidden cursor-pointer shadow-inner"
-            onClick={handleToggleCamera}
-            title={cameraOn ? "Click to turn camera off" : "Click to turn camera on"}
-          >
-            {cameraOn ? (
-              <>
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  muted
-                  className="absolute inset-0 w-full h-full object-cover opacity-85"
-                />
-                {/* Floating Camera Swap FAB */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSwapCamera();
-                  }}
-                  className="absolute top-4 right-4 z-40 w-11 h-11 rounded-full bg-surface/85 backdrop-blur-md border border-outline-variant flex items-center justify-center text-primary active:scale-90 hover:text-secondary shadow-lg transition-all"
-                  title="Switch Camera Source"
-                >
-                  <span className="material-symbols-outlined text-[20px]">flip_camera_ios</span>
-                </button>
-              </>
-            ) : (
+          <section className="relative w-full h-[40vh] min-h-[340px] bg-surface-container-lowest overflow-hidden rounded-[2rem] border border-white/5 relative group cursor-pointer" onClick={handleToggleCamera}>
+            {/* Practice Video element (always mounted to prevent null refs & ensure autoplay) */}
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                cameraOn ? 'opacity-85 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+            />
+
+            {/* Offline fallback image preview */}
+            {!cameraOn && (
               <div 
                 className="absolute inset-0 w-full h-full opacity-80 bg-cover bg-center transition-all duration-300"
-                style={{ 
-                  backgroundImage: "url('/male_signing.jpg')" 
-                }}
+                style={{ backgroundImage: "url('/male_signing.jpg')" }}
               />
             )}
 
@@ -813,76 +958,69 @@ export default function SignSpeakTranslate() {
               </div>
             )}
 
-            {cameraOn && (
-              <div className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-surface/90 backdrop-blur-md px-6 py-2.5 rounded-full border border-outline-variant shadow-md">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="font-mono text-xs uppercase tracking-widest text-on-surface">Arena Recognition Active</span>
-              </div>
-            )}
-
-            {!cameraOn && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 backdrop-blur-[2px]">
-                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 text-white animate-pulse mb-3">
-                  <span className="material-symbols-outlined text-3xl">videocam</span>
-                </div>
-                <p className="font-syne font-bold text-sm text-white tracking-widest uppercase">Tap to start camera feed</p>
-              </div>
-            )}
-          </section>
-
-          {/* Arena Control Board */}
-          <section className="flex-grow flex flex-col p-6 gap-5 bg-background overflow-y-auto">
-            {/* Score and Streak metrics */}
-            <div className="grid grid-cols-2 gap-4 shrink-0">
-              <div className="glass-card rounded-xl p-4 text-left">
-                <p className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider">Current Streak</p>
-                <p className="text-xl font-bold font-syne text-primary mt-1">🔥 {streak} Signs</p>
-              </div>
-              <div className="glass-card rounded-xl p-4 text-left">
-                <p className="text-[10px] text-on-surface-variant font-mono uppercase tracking-wider">All-Time High</p>
-                <p className="text-xl font-bold font-syne text-secondary mt-1">🏆 {highScore} Signs</p>
+            {/* HUD Status Bar */}
+            <div className="absolute top-6 left-6 z-10">
+              <div className="glass-panel-heavy text-white px-4 py-2 rounded-full flex items-center gap-2.5 font-sans text-[11px] font-semibold uppercase tracking-[0.08em] cursor-pointer hover:bg-white/10 active:scale-95 transition-all">
+                <span className={`w-2 h-2 rounded-full ${cameraOn ? 'bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)]' : 'bg-outline'} live-indicator`}></span>
+                {cameraOn ? 'Practice Camera Active' : 'Camera Paused'}
               </div>
             </div>
 
-            {/* Target sign prompt card */}
-            <div className="glass-card rounded-2xl p-6 relative flex flex-col justify-center min-h-[140px] shadow-sm text-left shrink-0">
-              <span className="absolute top-4 left-4 text-xs font-mono uppercase text-on-surface-variant tracking-wider">Target Sign Challenge</span>
-              
-              {arenaCompleted ? (
-                <motion.div 
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="text-center py-4 space-y-2 w-full"
-                >
-                  <span className="text-3xl">🎉</span>
-                  <h3 className="text-lg font-syne font-bold text-primary">MATCH DETECTED!</h3>
-                  <p className="text-xs text-on-surface-variant">Correct gesture shown. Preparing next sign...</p>
-                </motion.div>
-              ) : (
-                <div className="pt-3 space-y-1">
-                  <p className="text-[11px] text-on-surface-variant">Perform the gesture for:</p>
-                  <p className="text-2xl font-syne font-black text-on-surface tracking-wider uppercase">
-                    {SIGN_TUTORIALS[targetWord]?.title || targetWord}
-                  </p>
-                </div>
-              )}
+            <div className="absolute bottom-6 right-6 z-10">
+              <div className="glass-panel-heavy text-on-surface/95 px-4 py-2 rounded-full flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-wider">
+                <span className="material-symbols-outlined text-[18px] text-primary">sports_esports</span>
+                Target: {targetWord.toUpperCase()}
+              </div>
+            </div>
 
-              {!arenaCompleted && (
-                <div className="absolute bottom-4 right-4">
-                  <button 
-                    onClick={() => {
-                      if (vibrationEnabled && 'vibrate' in navigator) navigator.vibrate(15);
-                      setShowHint(!showHint);
-                    }}
-                    aria-label="Toggle Hint" 
-                    className={`w-10 h-10 flex items-center justify-center rounded-full hover:opacity-90 active:scale-90 transition-all cursor-pointer shadow-md ${
-                      showHint ? 'bg-primary text-white' : 'bg-surface border border-outline-variant text-on-surface'
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-lg">help_outline</span>
-                  </button>
+            {/* Floating Camera Swap FAB */}
+            {cameraOn && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSwapCamera();
+                }}
+                className="absolute top-4 right-4 z-40 w-11 h-11 rounded-full bg-surface/85 backdrop-blur-md border border-white/10 flex items-center justify-center text-primary active:scale-90 hover:text-secondary shadow-lg transition-all"
+                title="Switch Camera Source"
+              >
+                <span className="material-symbols-outlined text-[20px]">flip_camera_ios</span>
+              </button>
+            )}
+          </section>
+
+          {/* Interactive Challenge & Hints */}
+          <section className="flex-grow flex flex-col gap-6 text-left">
+            <div className="glass-panel-heavy rounded-[2rem] p-6 border border-white/5 relative flex flex-col md:flex-row justify-between items-center gap-6">
+              
+              {/* Challenge Target Card */}
+              <div className="flex-1 space-y-2">
+                <span className="text-[10px] font-mono uppercase text-on-surface-variant tracking-wider">Practice Challenge</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl">{SIGN_TUTORIALS[targetWord]?.illustration}</span>
+                  <div>
+                    <h3 className="font-syne font-bold text-2xl text-primary capitalize">{SIGN_TUTORIALS[targetWord]?.title}</h3>
+                    <p className="text-xs text-on-surface-variant mt-0.5">Perform this gesture in front of the camera.</p>
+                  </div>
                 </div>
-              )}
+              </div>
+
+              {/* Actions & Target Word selector */}
+              <div className="flex flex-wrap gap-2 justify-end w-full md:w-auto">
+                <button 
+                  onClick={() => setShowHint(!showHint)}
+                  className="h-11 px-6 border border-white/10 text-on-surface hover:bg-white/5 text-xs font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-lg">lightbulb</span>
+                  {showHint ? 'Hide Tutorial' : 'Show Hint'}
+                </button>
+                <button 
+                  onClick={handleSkipArenaWord}
+                  className="h-11 px-6 bg-primary text-white text-xs font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center gap-2 border-0"
+                >
+                  <span className="material-symbols-outlined text-lg">skip_next</span>
+                  Skip Challenge
+                </button>
+              </div>
             </div>
 
             {/* Interactive Hint drawer */}
@@ -892,17 +1030,18 @@ export default function SignSpeakTranslate() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden glass-card rounded-2xl p-4 text-left space-y-3 shrink-0"
+                  className="overflow-hidden glass-panel-heavy rounded-2xl p-6 text-left space-y-4 border border-white/5 shrink-0"
                 >
-                  <div className="flex items-center gap-2 border-b border-outline-variant pb-2">
+                  <div className="flex items-center gap-3 border-b border-white/5 pb-3">
                     <span className="text-2xl">{SIGN_TUTORIALS[targetWord]?.illustration}</span>
                     <div>
                       <h4 className="font-syne font-bold text-sm text-primary">Tutorial Hints</h4>
+                      <p className="text-[10px] text-on-surface-variant">Step-by-step gesture guidance</p>
                     </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {SIGN_TUTORIALS[targetWord]?.steps.map((step, idx) => (
-                      <div key={idx} className="flex gap-2 text-xs text-on-surface leading-normal">
+                      <div key={idx} className="flex gap-2 text-xs text-on-surface leading-relaxed">
                         <span className="font-mono text-primary font-bold">{idx + 1}.</span>
                         <p>{step}</p>
                       </div>
@@ -911,22 +1050,11 @@ export default function SignSpeakTranslate() {
                 </motion.div>
               )}
             </AnimatePresence>
-
-            {/* Action controls */}
-            <div className="flex gap-3 shrink-0">
-              <button 
-                onClick={handleSkipArenaWord}
-                className="flex-1 h-12 border border-outline-variant text-on-surface hover:bg-surface-variant font-syne font-bold rounded-xl flex items-center justify-center gap-2 active:scale-98 transition-transform cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-lg">skip_next</span>
-                SKIP CHALLENGE
-              </button>
-            </div>
           </section>
         </>
       )}
 
-      {/* Hidden Canvas for optimized video processing */}
+      {/* Hidden Canvas for optimized video frame capturing */}
       <canvas 
         ref={canvasRef} 
         className="hidden" 

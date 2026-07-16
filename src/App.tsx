@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppStore } from './store';
@@ -155,33 +155,24 @@ function NavBar() {
 }
 
 function SignSpeakHeader() {
-  const location = useLocation();
-  const prefix = location.pathname.startsWith('/live') ? '/live' : '/signspeak';
-  
-  const isTranslate = location.pathname === prefix || location.pathname === `${prefix}/result`;
-  const isHistory = location.pathname === `${prefix}/history`;
-
+  const { user } = useAppStore();
   return (
-    <header className="absolute top-0 lg:top-[40px] left-0 w-full z-50 glass-header flex justify-between items-center px-margin-mobile h-touch-target-min">
-      <Link to="/" className="flex items-center gap-2 active:scale-95 transition-transform cursor-pointer hover:opacity-85 no-underline">
-        <span className="material-symbols-outlined text-primary text-headline-md">accessibility_new</span>
-        <h1 className="font-headline-md text-headline-md text-primary m-0">Sign2Speech</h1>
-      </Link>
-      <div className="flex items-center">
-        {isTranslate ? (
-          <div className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="w-2.5 h-2.5 rounded-full bg-secondary pulse-secondary"></div>
-            <span className="font-label-caps text-label-caps text-primary tracking-widest">ONLINE</span>
+    <header className="bg-surface/40 backdrop-blur-3xl fixed top-0 w-full z-50 border-b border-white/5">
+      <div className="flex justify-between items-center px-margin-mobile h-16 w-full max-w-5xl mx-auto">
+        <div className="flex items-center gap-4">
+          <Link to="/" className="text-on-surface/85 flex items-center justify-center cursor-pointer active:scale-90 duration-200">
+            <span className="material-symbols-outlined">menu</span>
+          </Link>
+          <Link to="/" className="font-syne font-extrabold text-xl tracking-tight text-on-surface no-underline">
+            Sign2Speech
+          </Link>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-on-surface-variant font-mono hidden sm:inline">{user?.name || 'Demo User'}</span>
+          <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10 cursor-pointer active:scale-90 duration-200">
+            <img alt="Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/a/default-user=s120-c"/>
           </div>
-        ) : isHistory ? (
-          <span className="text-label-caps font-label-caps text-primary bg-primary-container/20 border border-primary/30 px-3 py-1 rounded-full">
-            ONLINE
-          </span>
-        ) : (
-          <span className="text-label-caps font-label-caps bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full uppercase">
-            Online
-          </span>
-        )}
+        </div>
       </div>
     </header>
   );
@@ -196,255 +187,71 @@ function SignSpeakBottomNav() {
   const isSettingsActive = currentPath === `${prefix}/settings`;
 
   return (
-    <nav className="absolute bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 glass-header rounded-t-xl shadow-md">
-      <Link
-        to={prefix}
-        className={`flex flex-col items-center justify-center px-4 py-2 transition-all duration-200 active:scale-90 ${
-          isTranslateActive
-            ? 'bg-secondary-container text-on-secondary-container rounded-full'
-            : 'text-on-surface-variant hover:bg-white/5 rounded-xl'
-        }`}
-      >
-        <span className="material-symbols-outlined" style={{ fontVariationSettings: isTranslateActive ? "'FILL' 1" : "'FILL' 0" }}>translate</span>
-        <span className="font-label-caps text-[10px] tracking-wider uppercase mt-1">Translate</span>
-      </Link>
-
-      <Link
-        to={`${prefix}/history`}
-        className={`flex flex-col items-center justify-center px-4 py-2 transition-all duration-200 active:scale-90 ${
-          isHistoryActive
-            ? 'bg-secondary-container text-on-secondary-container rounded-full'
-            : 'text-on-surface-variant hover:bg-white/5 rounded-xl'
-        }`}
-      >
-        <span className="material-symbols-outlined" style={{ fontVariationSettings: isHistoryActive ? "'FILL' 1" : "'FILL' 0" }}>history</span>
-        <span className="font-label-caps text-[10px] tracking-wider uppercase mt-1">History</span>
-      </Link>
-
-      <Link
-        to={`${prefix}/settings`}
-        className={`flex flex-col items-center justify-center px-4 py-2 transition-all duration-200 active:scale-90 ${
-          isSettingsActive
-            ? 'bg-secondary-container text-on-secondary-container rounded-full'
-            : 'text-on-surface-variant hover:bg-white/5 rounded-xl'
-        }`}
-      >
-        <span className="material-symbols-outlined" style={{ fontVariationSettings: isSettingsActive ? "'FILL' 1" : "'FILL' 0" }}>settings</span>
-        <span className="font-label-caps text-[10px] tracking-wider uppercase mt-1">Settings</span>
-      </Link>
-
-      <Link
-        to="/"
-        className="flex flex-col items-center justify-center px-4 py-2 transition-all duration-200 active:scale-90 text-on-surface-variant hover:bg-white/5 rounded-xl"
-      >
-        <span className="material-symbols-outlined">logout</span>
-        <span className="font-label-caps text-[10px] tracking-wider uppercase mt-1">Exit</span>
-      </Link>
-    </nav>
+    <div className="fixed bottom-8 left-0 right-0 flex justify-center z-50">
+      <nav className="apple-glass-dark w-[90%] max-w-md rounded-full px-6 py-3 flex justify-around items-center shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10">
+        <Link 
+          to={prefix} 
+          className={`flex items-center justify-center p-3 rounded-full transition-all duration-300 active:scale-90 ${
+            isTranslateActive ? 'bg-white text-black shadow-lg' : 'text-on-surface/65 hover:text-on-surface hover:bg-white/5'
+          }`}
+          title="Live Translation"
+        >
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: isTranslateActive ? "'FILL' 1" : "'FILL' 0" }}>translate</span>
+        </Link>
+        <Link 
+          to={`${prefix}/history`} 
+          className={`flex items-center justify-center p-3 rounded-full transition-all duration-300 active:scale-90 ${
+            isHistoryActive ? 'bg-white text-black shadow-lg' : 'text-on-surface/65 hover:text-on-surface hover:bg-white/5'
+          }`}
+          title="History Log"
+        >
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: isHistoryActive ? "'FILL' 1" : "'FILL' 0" }}>history</span>
+        </Link>
+        <Link 
+          to={`${prefix}/settings`} 
+          className={`flex items-center justify-center p-3 rounded-full transition-all duration-300 active:scale-90 ${
+            isSettingsActive ? 'bg-white text-black shadow-lg' : 'text-on-surface/65 hover:text-on-surface hover:bg-white/5'
+          }`}
+          title="Engine Settings"
+        >
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: isSettingsActive ? "'FILL' 1" : "'FILL' 0" }}>settings</span>
+        </Link>
+        <Link 
+          to="/" 
+          className="flex items-center justify-center p-3 rounded-full text-on-surface/65 hover:text-on-surface hover:bg-white/5 transition-all duration-300 active:scale-90"
+          title="Log Out"
+        >
+          <span className="material-symbols-outlined">logout</span>
+        </Link>
+      </nav>
+    </div>
   );
 }
 
 function SignSpeakLayout() {
-  const { currentGesture, sentence, isStreaming, useOllama } = useAppStore();
-  const [fps, setFps] = useState(30);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setFps((prev) => {
-        const delta = Math.floor(Math.random() * 3) - 1;
-        const next = prev + delta;
-        return Math.max(28, Math.min(32, next));
-      });
-    }, 1500);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
-    <div className="min-h-screen w-full bg-background text-on-background relative overflow-hidden flex items-center justify-center py-0 lg:py-6 px-0 lg:px-4 font-sans select-none">
-      {/* Premium Ambient Glowing Background */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[160px] pointer-events-none animate-pulse duration-[8000ms] hidden lg:block" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-tertiary/10 rounded-full blur-[140px] pointer-events-none animate-pulse duration-[6000ms] hidden lg:block" />
+    <div className="min-h-screen w-full bg-[#050505] text-on-background relative overflow-hidden flex flex-col font-sans select-none pb-28">
+      {/* Ambient background glows */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[140px] pointer-events-none" />
       
-      {/* Blueprint Grid Overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none hidden lg:block"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #4f46e5 1px, transparent 1px),
-            linear-gradient(to bottom, #4f46e5 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px'
-        }}
-      />
-
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 h-full lg:h-[860px]">
-        
-        <div className="hidden lg:flex lg:col-span-3 flex-col gap-6 self-stretch justify-center h-full overflow-hidden">
-          <div className="glass-card rounded-2xl p-5 flex flex-col gap-4 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
-            <div className="flex items-center justify-between border-b border-outline-variant pb-3">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase">RECOGNITION ENGINE</span>
-              <span className="w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-surface-variant rounded-xl p-3 border border-outline-variant">
-                <p className="text-[10px] text-on-surface-variant font-mono">THROUGHPUT</p>
-                <p className="text-xl font-bold font-syne text-primary mt-1">{isStreaming ? `${fps} FPS` : '0 FPS'}</p>
-              </div>
-              <div className="bg-surface-variant rounded-xl p-3 border border-outline-variant">
-                <p className="text-[10px] text-on-surface-variant font-mono">LATENCY</p>
-                <p className="text-xl font-bold font-syne text-secondary mt-1">{isStreaming ? '32.4 ms' : '--'}</p>
-              </div>
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-on-surface-variant">Model Precision</span>
-                <span className="font-mono text-on-surface">FP16 (Half)</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-on-surface-variant">Confidence Thresh</span>
-                <span className="font-mono text-on-surface">0.50</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-on-surface-variant">Classes Monitored</span>
-                <span className="font-mono text-on-surface">22 gestures</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl p-5 flex-grow flex flex-col gap-4 overflow-hidden relative min-h-[300px]">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent" />
-            <h3 className="font-label-caps text-xs text-secondary tracking-widest uppercase border-b border-outline-variant pb-3">LIVE GESTURE FEED</h3>
-            
-            <div className="flex-grow overflow-y-auto space-y-2.5 pr-1 text-sm font-mono scrollbar-none">
-              {currentGesture ? (
-                <div className="bg-surface-variant rounded-lg p-2.5 border border-outline-variant flex items-center justify-between animate-fade-in">
-                  <div>
-                    <span className="text-primary font-bold">▶ {currentGesture.class}</span>
-                    <p className="text-[10px] text-on-surface-variant mt-0.5">{new Date(currentGesture.timestamp).toLocaleTimeString()}</p>
-                  </div>
-                  <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded border border-primary/20 font-bold">
-                    {(currentGesture.confidence * 100).toFixed(0)}%
-                  </span>
-                </div>
-              ) : (
-                <div className="h-full flex flex-col items-center justify-center text-on-surface-variant/75 py-12 text-center text-xs">
-                  <span className="material-symbols-outlined text-3xl mb-2 text-outline/40">sensors</span>
-                  <p>Awaiting gesture input...</p>
-                </div>
-              )}
-            </div>
-          </div>
+      {/* Top Header */}
+      <SignSpeakHeader />
+      
+      {/* Page Content */}
+      <div className="flex-grow pt-24 px-margin-mobile">
+        <div className="max-w-5xl mx-auto w-full">
+          <Routes>
+            <Route path="/" element={<SignSpeakTranslate />} />
+            <Route path="/result" element={<SignSpeakResult />} />
+            <Route path="/history" element={<SignSpeakHistory />} />
+            <Route path="/settings" element={<SignSpeakSettings />} />
+          </Routes>
         </div>
-
-        {/* MIDDLE PANEL: Smartphone Device Frame Mockup */}
-        <div className="col-span-1 lg:col-span-6 flex justify-center items-center h-full w-full">
-          
-          {/* Physical Phone frame bezel */}
-          <div className="relative w-full h-[100dvh] lg:h-[840px] lg:max-w-[410px] bg-background lg:bg-[#000000] lg:rounded-[52px] lg:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3),0_0_80px_rgba(79,70,229,0.05)] lg:p-[12px] lg:border-4 lg:border-[#1E2022] overflow-hidden flex flex-col select-none group">
-            
-            {/* Phone glare effect */}
-            <div className="hidden lg:block absolute top-0 right-0 w-[150%] h-[150%] bg-gradient-to-br from-white/[0.05] via-transparent to-transparent pointer-events-none z-40 rounded-[40px] transform rotate-12 -translate-y-[40%] translate-x-[20%]" />
-            
-            {/* Speaker & Sensor Notch (Dynamic Island) */}
-            <div className="hidden lg:flex absolute top-[22px] left-1/2 -translate-x-1/2 w-[110px] h-[28px] bg-black rounded-full z-50 items-center justify-between px-3 border border-white/5 shadow-inner">
-              <div className="w-[10px] h-[10px] rounded-full bg-[#111115] border border-white/5 flex items-center justify-center">
-                <div className="w-[3px] h-[3px] rounded-full bg-[#0d3466]" />
-              </div>
-              <div className="w-[50px] h-[4px] rounded-full bg-white/10" />
-              <div className="w-[10px] h-[10px] rounded-full bg-[#0d0d0f]" />
-            </div>
-
-            {/* Screen inner wrapper */}
-            <div className="w-full h-full lg:rounded-[40px] overflow-hidden bg-background relative flex flex-col border-0 lg:border border-outline-variant">
-              
-              {/* Screen Top Status Bar */}
-              <div className="hidden lg:flex absolute top-0 left-0 w-full h-[40px] z-50 justify-between items-center px-6 pt-1 text-[11px] font-mono text-on-surface-variant select-none pointer-events-none">
-                <span>9:41</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[12px]">signal_cellular_alt</span>
-                  <span className="material-symbols-outlined text-[12px]">wifi</span>
-                  <span className="material-symbols-outlined text-[14px]">battery_5_bar</span>
-                </div>
-              </div>
-
-              {/* Header inside wrapper */}
-              <SignSpeakHeader />
-
-              {/* Main Application Routes Content */}
-              <div className="flex-1 flex flex-col pt-12 lg:pt-[88px] pb-20 overflow-y-auto">
-                <Routes>
-                  <Route index element={<SignSpeakTranslate />} />
-                  <Route path="history" element={<SignSpeakHistory />} />
-                  <Route path="settings" element={<SignSpeakSettings />} />
-                  <Route path="result" element={<SignSpeakResult />} />
-                </Routes>
-              </div>
-
-              <SignSpeakBottomNav />
-            </div>
-            
-            {/* Physical Buttons (Volume/Power) for realism */}
-            <div className="hidden lg:block absolute left-[-4px] top-[140px] w-[4px] h-[45px] bg-[#1a1a1c] border-l border-white/10 rounded-l" />
-            <div className="hidden lg:block absolute left-[-4px] top-[195px] w-[4px] h-[45px] bg-[#1a1a1c] border-l border-white/10 rounded-l" />
-            <div className="hidden lg:block absolute right-[-4px] top-[160px] w-[4px] h-[65px] bg-[#1a1a1c] border-r border-white/10 rounded-r" />
-          </div>
-
-        </div>
-
-        {/* RIGHT PANEL: NLP translation engine diagnostics */}
-        <div className="hidden lg:flex lg:col-span-3 flex-col gap-6 self-stretch justify-center h-full overflow-hidden">
-          <div className="glass-card rounded-2xl p-5 flex flex-col gap-4 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
-            <div className="flex items-center justify-between border-b border-outline-variant pb-3">
-              <span className="font-label-caps text-xs text-primary tracking-widest uppercase">NLP ENGINE STATUS</span>
-              <span className="w-2.5 h-2.5 rounded-full bg-primary" />
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-on-surface-variant">Active Model</span>
-                <span className="font-mono text-on-surface">Local AI Model</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-on-surface-variant">Refinement Mode</span>
-                <span className="font-mono text-[#4f46e5]">{useOllama ? 'LLM ACTIVE' : 'PASSTHROUGH'}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-on-surface-variant">TTS Engine</span>
-                <span className="font-mono text-on-surface">Speech Synthesis</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl p-5 flex-grow flex flex-col gap-4 overflow-hidden relative min-h-[300px]">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-tertiary to-transparent" />
-            <h3 className="font-label-caps text-xs text-tertiary tracking-widest uppercase border-b border-outline-variant pb-3">TRANSLATION STREAM</h3>
-
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1 text-sm font-mono scrollbar-none flex flex-col">
-              {sentence ? (
-                <div className="bg-surface-variant rounded-xl p-4 border border-outline-variant flex-1 flex flex-col justify-between">
-                  <div>
-                    <span className="text-on-surface-variant text-xs uppercase font-bold tracking-wide">Accumulated signs:</span>
-                    <p className="text-tertiary text-sm mt-1.5 leading-relaxed font-bold">"{sentence}"</p>
-                  </div>
-                  <div className="border-t border-outline-variant pt-3 mt-4 text-[10px] text-on-surface-variant/75">
-                    Press "SPEAK NOW" inside the device screen to query NLP model and speak.
-                  </div>
-                </div>
-              ) : (
-                <div className="h-full flex-grow flex flex-col items-center justify-center text-on-surface-variant/75 py-12 text-center text-xs">
-                  <span className="material-symbols-outlined text-3xl mb-2 text-outline/40">translate</span>
-                  <p>Accumulating sentence signs...</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      {/* Floating Bottom Nav */}
+      <SignSpeakBottomNav />
     </div>
   );
 }

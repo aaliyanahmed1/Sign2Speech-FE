@@ -262,3 +262,36 @@ body {
 .h-touch-target-min {
   height: 56px !important;
 }
+
+/* Premium Apple Design System Utilities */
+.mesh-gradient {
+  background: radial-gradient(at 0% 0%, hsla(210,100%,8%,1) 0, transparent 60%),
+              radial-gradient(at 50% 0%, hsla(220,100%,4%,1) 0, transparent 60%),
+              radial-gradient(at 100% 0%, hsla(200,100%,6%,1) 0, transparent 60%),
+              #080a0a !important;
+}
+
+.apple-glass {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 0.5px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+.apple-glass-dark {
+  background: rgba(20, 20, 20, 0.4) !important;
+  backdrop-filter: blur(40px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.animate-float {
+  animation: float-anim 8s ease-in-out infinite;
+}
+
+@keyframes float-anim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
