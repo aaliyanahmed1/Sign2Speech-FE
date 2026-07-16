@@ -379,7 +379,7 @@ export default function SignSpeakTranslate() {
     if (useOllama && sentence) {
       addToast('Refining sentence using Ollama local AI...', 'info');
       try {
-        const response = await apiClient.translate(sentence, useOllama);
+        const response = await apiClient.translate(sentence, useOllama, voiceId);
         if (response.translated) {
           textToSpeak = response.translated;
         }

@@ -67,7 +67,7 @@ export const useAppStore = create<SignSpeakState>((set) => ({
   pinnedIds: new Set(),
   voiceSpeed: 1.0,
   voicePitch: 1.0,
-  voiceId: 'en-US-EmmaNeural',
+  voiceId: 'ur-PK-AsmaNeural',
   autoSpeak: false,
   vibrationEnabled: true,
   handCalibration: { left: false, right: false },

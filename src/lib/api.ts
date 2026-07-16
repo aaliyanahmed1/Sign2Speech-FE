@@ -156,11 +156,11 @@ class ApiClient {
     return response.json();
   }
 
-  async translate(sentence: string, useOllama: boolean = true, signal?: AbortSignal) {
+  async translate(sentence: string, useOllama: boolean = true, voiceId?: string, signal?: AbortSignal) {
     const response = await fetch(`${this.baseUrl}/api/translate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sentence, use_ollama: useOllama }),
+      body: JSON.stringify({ sentence, use_ollama: useOllama, voice_id: voiceId }),
       signal,
     });
     if (!response.ok) throw new Error(`Translation failed: ${response.statusText}`);

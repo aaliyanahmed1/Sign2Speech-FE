@@ -47,7 +47,7 @@ export default function SignSpeakSettings() {
       clearAllHistory();
       setVoiceSpeed(1.0);
       setVoicePitch(1.0);
-      setVoiceId('en-US-EmmaNeural');
+      setVoiceId('ur-PK-AsmaNeural');
       setHighContrast(false);
       setLargeText(true);
       addToast('System data reset successfully', 'success');
@@ -114,10 +114,10 @@ export default function SignSpeakSettings() {
             <label className="text-body-lg font-bold text-on-surface block text-xs font-mono uppercase tracking-wider">Expressive Voice Profile</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
-                { id: 'en-US-EmmaNeural', name: 'Emma (Ultra-Real)', description: 'Expressive & Conversational Female', icon: 'female' },
-                { id: 'en-US-JennyNeural', name: 'Jenny (Natural)', description: 'Friendly & Clear Female', icon: 'face' },
-                { id: 'en-US-BrianNeural', name: 'Brian (Ultra-Real)', description: 'Warm & Expressive Male', icon: 'male' },
-                { id: 'en-US-RyanNeural', name: 'Ryan (British)', description: 'Expressive British Accent Male', icon: 'record_voice_over' },
+                { id: 'ur-PK-AsmaNeural', name: 'Asma (Urdu Female)', description: 'Conversational Urdu Voice Profile', icon: 'female' },
+                { id: 'ur-PK-SalmanNeural', name: 'Salman (Urdu Male)', description: 'Clear Expressive Urdu Voice Profile', icon: 'male' },
+                { id: 'en-US-EmmaNeural', name: 'Emma (English Female)', description: 'Expressive & Conversational English', icon: 'female' },
+                { id: 'en-US-BrianNeural', name: 'Brian (English Male)', description: 'Warm & Expressive English Voice', icon: 'male' },
               ].map((v) => (
                 <button
                   key={v.id}
