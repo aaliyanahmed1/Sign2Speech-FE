@@ -29,7 +29,7 @@ const GESTURES = [
 
 export default function About() {
   return (
-    <div className="max-w-5xl mx-auto p-6 md:p-8 pt-10 font-sans space-y-12 text-left bg-background text-on-background">
+    <div className="max-w-7xl mx-auto p-6 md:p-8 pt-10 font-sans space-y-12 text-left bg-background text-on-background">
       {/* Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

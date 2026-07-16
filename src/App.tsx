@@ -158,7 +158,7 @@ function SignSpeakHeader() {
   const { user } = useAppStore();
   return (
     <header className="bg-surface/40 backdrop-blur-3xl fixed top-0 w-full z-50 border-b border-white/5">
-      <div className="flex justify-between items-center px-margin-mobile h-16 w-full max-w-5xl mx-auto">
+      <div className="flex justify-between items-center px-margin-mobile h-16 w-full max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
           <Link to="/" className="text-on-surface/85 flex items-center justify-center cursor-pointer active:scale-90 duration-200">
             <span className="material-symbols-outlined">menu</span>

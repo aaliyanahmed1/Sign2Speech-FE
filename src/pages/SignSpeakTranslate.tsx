@@ -502,7 +502,7 @@ export default function SignSpeakTranslate() {
   };
 
     return (
-    <div className="flex-grow flex flex-col bg-[#050505] select-none font-sans max-w-5xl mx-auto w-full gap-8">
+    <div className="flex-grow flex flex-col bg-[#050505] select-none font-sans max-w-7xl mx-auto w-full gap-8 px-6">
       {/* Segment Mode Selector */}
       <div className="flex border border-white/5 p-1.5 gap-1.5 justify-between shrink-0 apple-glass rounded-[1.75rem]">
         {[

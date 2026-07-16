@@ -115,7 +115,7 @@ export default function UploadAnalyze() {
   };
 
     return (
-    <div className="max-w-5xl mx-auto p-6 md:p-8 pt-10 font-sans space-y-8 px-margin-mobile">
+    <div className="max-w-7xl mx-auto p-6 md:p-8 pt-10 font-sans space-y-8 px-margin-mobile">
       <div className="text-left">
         <h2 className="text-3xl md:text-4xl font-syne font-bold text-on-surface">Image Detection Engine</h2>
         <p className="text-on-surface-variant mt-1.5 text-sm leading-relaxed">
