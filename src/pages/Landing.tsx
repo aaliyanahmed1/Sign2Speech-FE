@@ -20,8 +20,11 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0c0c] text-on-surface antialiased overflow-x-hidden selection:bg-primary/30 font-sans relative">
-      <main className="pt-24 pb-36 mesh-gradient min-h-screen">
+    <div className="min-h-screen bg-[url('/male_signing.jpg')] bg-fixed bg-cover bg-center text-on-surface antialiased overflow-x-hidden selection:bg-primary/30 font-sans relative">
+      {/* Dark frosted overlay to make text pop while keeping the background image beautifully visible */}
+      <div className="absolute inset-0 bg-[#050505]/90 backdrop-blur-[5px] pointer-events-none z-0" />
+      
+      <main className="pt-24 pb-36 min-h-screen relative z-10">
         {/* Hero Section */}
         <section className="relative px-margin-mobile pt-16 md:pt-24 max-w-5xl mx-auto text-center overflow-hidden z-10">
           
